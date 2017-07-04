@@ -25,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 
 public class A21_InserisciElemento extends SuperActivity {
     //DICHIARO TUTTI GLI ELEMENTI CHE DEVO USARE, REQUEST_CODE è PER CHIEDERE L'UTILIZZO DELLA FOTOCAMERA
@@ -58,6 +60,7 @@ public class A21_InserisciElemento extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a21_layout);
+
         /*
         ALERTDIALOG USATO PER I CONTROLLI
          */
@@ -113,6 +116,7 @@ public class A21_InserisciElemento extends SuperActivity {
     }
 
     public void inizializza() {
+
         txtcategoria = (TextView) findViewById(R.id.txtcategoria);
         txtnomelemento = (TextView) findViewById(R.id.txtnomelemento);
         txtdescrizione = (TextView) findViewById(R.id.txtdescrizione);
@@ -121,10 +125,55 @@ public class A21_InserisciElemento extends SuperActivity {
         btnFoto = (Button) findViewById(R.id.btn_foto);
         btnCreaElemento = (Button) findViewById(R.id.btn_crea_elemento);
         iViewElemento1 = (ImageView) findViewById(R.id.imageView_elemento1);
+        iViewElemento1.setId(0);
         iViewElemento2 = (ImageView) findViewById(R.id.imageView_elemento2);
+        iViewElemento2.setId(1);
         iViewElemento3 = (ImageView) findViewById(R.id.imageView_elemento3);
+        iViewElemento3.setId(2);
         iViewElemento4 = (ImageView) findViewById(R.id.imageView_elemento4);
+        iViewElemento4.setId(3);
         iViewElemento5 = (ImageView) findViewById(R.id.imageView_elemento5);
+        iViewElemento5.setId(4);
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+
+                builder = new AlertDialog.Builder(A21_InserisciElemento.this);
+                builder.setCancelable(true);
+                builder.setPositiveButton(
+                        getResources().getString(R.string.Yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                v.setVisibility(View.GONE);
+                                countviews = v.getId();
+                                bitmaps.remove(countviews);
+                                dialog.cancel();
+                            }
+                        });
+                builder.setNegativeButton( getResources().getString(R.string.No),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.setMessage(getResources().getString(R.string.Delete_element));
+                alertDialog = builder.create();
+                alertDialog.show();
+
+            }
+        };
+        iViewElemento1.setOnClickListener(listener);
+        iViewElemento2.setOnClickListener(listener);
+        iViewElemento3.setOnClickListener(listener);
+        iViewElemento4.setOnClickListener(listener);
+        iViewElemento5.setOnClickListener(listener);
+        etNomeElemento.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(!((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP));
+                return false;
+            }
+        });
 
         //metto un listener per lo scorrimento del testo nell'inserimento descrizione
         etDescrizione.setOnTouchListener(new View.OnTouchListener() {

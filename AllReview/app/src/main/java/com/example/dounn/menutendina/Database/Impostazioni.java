@@ -16,11 +16,11 @@ public class Impostazioni {
     private boolean MiaMigliorRisposta;
 
     Impostazioni(JSONObject impostazioni) throws JSONException {
-        NuovaRecensioneUtenteCheSeguo = Boolean.valueOf(impostazioni.getString("NuovaRecensioneUtenteCheSeguo").toLowerCase());
-        NuovaRecensioneOggettoCheSeguo = Boolean.valueOf(impostazioni.getString("NuovaRecensioneOggettoCheSeguo").toLowerCase());
-        NuovoVotoMiaRecensione = Boolean.valueOf(impostazioni.getString("NuovoVotoMiaRecensione").toLowerCase());
-        NuovaRispostaMiaDomanda = Boolean.valueOf(impostazioni.getString("NuovaRispostaMiaDomanda").toLowerCase());
-        MiaMigliorRisposta = Boolean.valueOf(impostazioni.getString("MiaMigliorRisposta").toLowerCase());
+        NuovaRecensioneUtenteCheSeguo = impostazioni.getInt("NuovaRecensioneUtenteCheSeguo") > 0;
+        NuovaRecensioneOggettoCheSeguo = impostazioni.getInt("NuovaRecensioneOggettoCheSeguo") > 0;
+        NuovoVotoMiaRecensione = impostazioni.getInt("NuovoVotoMiaRecensione") > 0;
+        NuovaRispostaMiaDomanda = impostazioni.getInt("NuovaRispostaMiaDomanda") > 0;
+        MiaMigliorRisposta = impostazioni.getInt("MiaMigliorRisposta") > 0;
     }
 
     public boolean isNuovaRecensioneUtenteCheSeguo() {

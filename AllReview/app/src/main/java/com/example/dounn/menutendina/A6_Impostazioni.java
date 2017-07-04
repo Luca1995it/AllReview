@@ -53,11 +53,11 @@ public class A6_Impostazioni extends LoggedActivity {
                 JSONObject req = new JSONObject();
                 try {
                     req.put("path", "nuove_impostazioni");
-                    req.put("nuovaRecensioneUtenteCheSeguo", nuovaRecensioneUtenteCheSeguo.isChecked());
-                    req.put("nuovaRecensioneOggettoCheSeguo", nuovaRecensioneOggettoCheSeguo.isChecked());
-                    req.put("nuovoVotoMiaRecensione", nuovoVotoMiaRecensione.isChecked());
-                    req.put("nuovaRispostaMiaDomanda", nuovaRispostaMiaDomanda.isChecked());
-                    req.put("miaMigliorRisposta", miaMigliorRisposta.isChecked());
+                    req.put("nuovaRecensioneUtenteCheSeguo", nuovaRecensioneUtenteCheSeguo.isChecked() ? 1 : 0);
+                    req.put("nuovaRecensioneOggettoCheSeguo", nuovaRecensioneOggettoCheSeguo.isChecked() ? 1 : 0);
+                    req.put("nuovoVotoMiaRecensione", nuovoVotoMiaRecensione.isChecked() ? 1 : 0);
+                    req.put("nuovaRispostaMiaDomanda", nuovaRispostaMiaDomanda.isChecked() ? 1 : 0);
+                    req.put("miaMigliorRisposta", miaMigliorRisposta.isChecked() ? 1 : 0);
                     req.put("token", getToken());
 
                 } catch(JSONException e) {

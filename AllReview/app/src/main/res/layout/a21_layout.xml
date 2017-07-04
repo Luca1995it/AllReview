@@ -26,28 +26,14 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-        <FrameLayout
+        <Spinner
+            android:id="@+id/spinner_crea"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Spinner
-                android:id="@+id/spinner_crea"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:gravity="center"
-                android:spinnerMode="dropdown"
-                android:visibility="gone"/>
-
-            <ProgressBar
-                android:id="@+id/progress_categorie_a21"
-                style="@android:style/Widget.Holo.Light.ProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </FrameLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:spinnerMode="dropdown"/>
     </LinearLayout>
 
 
@@ -63,11 +49,14 @@
 
     <EditText
         android:id="@+id/etNomeElemento"
-        android:layout_width="212dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_gravity="center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:hint="@string/Name_nome_elemento"
         android:inputType="textCapSentences|textMultiLine"
+        android:scrollbars="vertical"
         android:textSize="15sp"/>
 
 
@@ -148,21 +137,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="25dp"
         android:text="@string/Descrizione"
         android:textSize="25sp"
         android:textStyle="bold"/>
 
     <EditText
         android:id="@+id/etDescrizione"
-        android:layout_width="300dp"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal|center"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
         android:hint="@string/Name_nome_elemento"
         android:inputType="textCapSentences|textMultiLine"
         android:scrollbars="vertical"
-        android:textSize="18sp"
-        />
+        android:textSize="18sp"/>
 
 
     <Button

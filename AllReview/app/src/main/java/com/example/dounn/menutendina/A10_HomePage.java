@@ -178,6 +178,7 @@ public class A10_HomePage extends SuperActivity {
                                 Log.i("Successo", "Risultato: " + a.getJSONArray("result"));
                                 if(a.getJSONArray("result").length() > 0) {
                                     count++;
+                                    stopCaricamento(200);
                                     if(count <= NUMERO_LISTE - 1) {
                                         elementi = new ArrayList<>();
                                         for(int j = 0; j < a.getJSONArray("result").length(); j++) {
@@ -195,9 +196,7 @@ public class A10_HomePage extends SuperActivity {
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                         Log.i("Successo", "elementi" + elementi.size());
                                         arrayListeLayout.get(count).setAdapter(new SuggeritiPreferitiRecentiAdapter(ctx, elementi, intent));
-                                        if(count == NUMERO_LISTE - 1) {
-                                            stopCaricamento(100);
-                                        }
+
                                     }
                                 }
 

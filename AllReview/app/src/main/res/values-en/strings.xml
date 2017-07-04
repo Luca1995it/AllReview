@@ -226,4 +226,7 @@
     <string name="cancel">annulla</string>
     <string name="allert_anonimo">Se accedi da anonimo non potrai godere di tutte le funzionalità</string>
     <string name="title_allert_anonimo">Alert</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="Delete_element">Do you want to delete this Object?</string>
 </resources>
