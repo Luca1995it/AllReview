@@ -286,4 +286,5 @@
     <string name="Computer">Computer e Accessori</string>
     <string name="not_available">n.a.</string>
     <string name="not_logged">Devi registrarti per poter fare domande</string>
+    <string name="personal_email">Indirizzo email corrente: {0}</string>
 </resources>

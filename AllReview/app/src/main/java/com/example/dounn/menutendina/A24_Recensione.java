@@ -96,12 +96,44 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
         pointAnimationPositivi.setNumber(recensione.getVotiPositivi());
         pointAnimationNegativi.setNumber(recensione.getVotiNegativi());
 
-        update();
+        init();
         enableOnScrollDownAction();
     }
 
 
     void update() {
+        if(recensione == null) return;
+        int id_recensione = recensione.getId();
+        startCaricamento(0,getResources().getString(R.string.caricamento_recensione));
+        JSONObject req = new JSONObject();
+        try {
+            req.put("path", "recensione");
+            req.put("id_recensione", id_recensione);
+            new Request(new RequestCallback() {
+                @Override
+                public void inTheEnd(JSONObject a) {
+                    try {
+                        if(a.getString("status").equals("OK")) {
+                            recensione = new Recensione(a.getJSONObject("result"));
+                            stopCaricamento(100);
+                            init();
+                        }
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void noInternetConnection() {
+                    noInternetErrorBar();
+                }
+            }).execute(req);
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void init() {
         textvieVotazioneStelleA24.setText(String.format("%.1f", (recensione.getVoto())));
 
         immagineRecensione.setFotoPath(recensione.getFotopath());
@@ -145,182 +177,183 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
             if(recensione.getUtente().getId() == getUser().getId()) {
                 setGone(bottonepositivi, bottonenegativi, segnala, progressnegativi, progresspositivi);
             } else {
-                //permetto la segnalazione
-                segnala.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //instanzio un DialogFragment per ricevere la segnalazione dall'utente
-                        FragmentManager fm = getSupportFragmentManager();
-                        MyDialogFragment alertDialog = MyDialogFragment.newInstance(ctx.getResources().getString(R.string.titolo_segnalazione_recensione));
-                        alertDialog.show(fm, "fragment_segnalazione");
-                        //riceverò i risultati in onFinishEditDialog(testo inserito)
-                    }
-                });
 
-                //controllo anche di non aver esaurito i voti
-                if(!getUser().canVoto()) {
+                //controllo anche di non aver esaurito i voti, se l'avevo già votata, l'onresume me la farà vedere
+                if(!getUser().canVoto() && votoFatto == 0) {
                     setGone(bottonepositivi, bottonenegativi, progressnegativi, progresspositivi);
                     errorBar(getResources().getString(R.string.terminati_voti), 3000);
-                } else {
-                    bottonepositivi.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Log.d("Risultato Prima di positivo voto", String.valueOf(votoFatto));
-
-                            if(votoFatto == 1) {
-                                errorBar(getResources().getString(R.string.giapositivo), 3000);
-                            } else {
-
-                                JSONObject req = new JSONObject();
-                                try {
-                                    req.put("voto", 1);
-                                    req.put("id_recensione", recensione.getId());
-                                    req.put("path", "vota_recensione");
-                                    req.put("token", getToken());
-                                } catch(JSONException e) {
-                                    Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
-                                }
-
-                                //mostro i caricamenti dei pulsanti
-                                setGone(bottonepositivi, bottonenegativi);
-                                setVisible(progresspositivi, progressnegativi);
-
-                                //chiedo una richiesta veloce al server per la votazione
-                                new Request(new RequestCallback() {
-                                    @Override
-                                    public void inTheEnd(JSONObject a) {
-                                        try {
-                                            if(a.getString("status").equals("OK")) {
-                                                successBar("Voto Aggiunto correttamente", 3000);
-
-                                                //se non avevo votato niente
-                                                if(votoFatto == 0) {
-                                                    pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() + 1);
-                                                    Log.d("Risultato positivi dopo +1", String.valueOf(pointAnimationPositivi.getNumber()));
-                                                    recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
-                                                } else {
-                                                    //se l'utente aveva già votato negativo
-                                                    if(votoFatto == -1) {
-                                                        Log.d("Risultato prima negativi", String.valueOf(pointAnimationNegativi.getNumber()));
-                                                        Log.d("Risultato prima positivi", String.valueOf(pointAnimationPositivi.getNumber()));
-                                                        pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() + 1);
-                                                        pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() - 1);
-                                                        Log.d("Risultato poi negativi", String.valueOf(pointAnimationNegativi.getNumber()));
-                                                        Log.d("Risultato poi positivi", String.valueOf(pointAnimationPositivi.getNumber()));
-                                                        recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
-                                                    }
-                                                }
-
-                                                bottonenegativi.setEnabled(true);
-                                                bottonepositivi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
-                                                bottonepositivi.setEnabled(false);
-                                                bottonenegativi.setBackgroundResource(R.drawable.segnala_elemento);
-
-                                                //mostro i bottoni
-                                                setGone(progresspositivi, progressnegativi);
-                                                setVisible(bottonepositivi, bottonenegativi);
-
-                                                votoFatto = 1;
-                                                Store.add("recensione", recensione);
-                                                getUser().fattoVoto();
-                                                onScrollDownAction();
-                                            }
-                                        } catch(JSONException e) {
-                                            errorBar("Errore", 3000);
-                                        }
-                                        stopCaricamento(200);
-                                    }
-
-                                    @Override
-                                    public void noInternetConnection() {
-                                        noInternetErrorBar();
-                                        stopCaricamento(200);
-                                    }
-                                }).execute(req);
-                            }
-                        }
-                    });
-
-                    bottonenegativi.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            Log.d("Risultato Prima di negativo", String.valueOf(votoFatto));
-                            if(votoFatto == -1) {
-                                errorBar(getResources().getString(R.string.gianegativo), 3000);
-                            } else {
-                                JSONObject req = new JSONObject();
-                                try {
-                                    req.put("voto", -1);
-                                    req.put("id_recensione", recensione.getId());
-                                    req.put("path", "vota_recensione");
-                                    req.put("token", getToken());
-                                } catch(JSONException e) {
-                                    Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
-                                }
-
-                                //mostro i caricamenti dei pulsanti
-                                setGone(bottonepositivi, bottonenegativi);
-                                setVisible(progresspositivi, progressnegativi);
-
-                                //chiedo una richiesta veloce al server per la votazione
-                                new Request(new RequestCallback() {
-                                    @Override
-                                    public void inTheEnd(JSONObject a) {
-                                        try {
-                                            if(a.getString("status").equals("OK")) {
-                                                successBar("Voto Aggiunto correttamente", 3000);
-
-                                                //se non avevo votato niente
-                                                if(votoFatto == 0) {
-                                                    pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() + 1);
-                                                    recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
-                                                } else {
-                                                    //se l'utente aveva già votato positivo
-                                                    if(votoFatto == 1) {
-                                                        pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() - 1);
-                                                        pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() + 1);
-                                                        recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
-                                                    }
-                                                }
-
-                                                bottonepositivi.setBackgroundResource(R.drawable.bottone_verdino);
-                                                bottonepositivi.setEnabled(true);
-                                                bottonenegativi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
-                                                bottonenegativi.setEnabled(false);
-
-                                                //mostro i bottoni
-                                                setGone(progresspositivi, progressnegativi);
-                                                setVisible(bottonepositivi, bottonenegativi);
-
-                                                votoFatto = -1;
-                                                Store.add("recensione", recensione);
-                                                getUser().fattoVoto();
-                                                onScrollDownAction();
-                                            } else {
-                                                errorBar("Già votato", 3000);
-                                            }
-                                        } catch(JSONException e) {
-                                            errorBar("Errore", 3000);
-                                        }
-                                        stopCaricamento(200);
-                                    }
-
-                                    @Override
-                                    public void noInternetConnection() {
-                                        noInternetErrorBar();
-                                        stopCaricamento(200);
-                                    }
-                                }).execute(req);
-
-                            }
-                            //negativi.setText(String.valueOf(Integer.valueOf(negativi.getText().toString()) - 1));
-                            //TODO definire limite cliccabile dall'utente
-                        }
-                    });
                 }
             }
         }
+
+        bottonepositivi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Risultato Prima di positivo voto", String.valueOf(votoFatto));
+
+                if(votoFatto == 1) {
+                    errorBar(getResources().getString(R.string.giapositivo), 3000);
+                } else {
+
+                    JSONObject req = new JSONObject();
+                    try {
+                        req.put("voto", 1);
+                        req.put("id_recensione", recensione.getId());
+                        req.put("path", "vota_recensione");
+                        req.put("token", getToken());
+                    } catch(JSONException e) {
+                        Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
+                    }
+
+                    //mostro i caricamenti dei pulsanti
+                    setGone(bottonepositivi, bottonenegativi);
+                    setVisible(progresspositivi, progressnegativi);
+
+                    //chiedo una richiesta veloce al server per la votazione
+                    new Request(new RequestCallback() {
+                        @Override
+                        public void inTheEnd(JSONObject a) {
+                            try {
+                                if(a.getString("status").equals("OK")) {
+                                    successBar("Voto Aggiunto correttamente", 3000);
+
+                                    //se non avevo votato niente
+                                    if(votoFatto == 0) {
+                                        pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() + 1);
+                                        Log.d("Risultato positivi dopo +1", String.valueOf(pointAnimationPositivi.getNumber()));
+                                        recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
+                                    } else {
+                                        //se l'utente aveva già votato negativo
+                                        if(votoFatto == -1) {
+                                            Log.d("Risultato prima negativi", String.valueOf(pointAnimationNegativi.getNumber()));
+                                            Log.d("Risultato prima positivi", String.valueOf(pointAnimationPositivi.getNumber()));
+                                            pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() + 1);
+                                            pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() - 1);
+                                            Log.d("Risultato poi negativi", String.valueOf(pointAnimationNegativi.getNumber()));
+                                            Log.d("Risultato poi positivi", String.valueOf(pointAnimationPositivi.getNumber()));
+                                            recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
+                                        }
+                                    }
+
+                                    bottonenegativi.setEnabled(true);
+                                    bottonepositivi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
+                                    bottonepositivi.setEnabled(false);
+                                    bottonenegativi.setBackgroundResource(R.drawable.segnala_elemento);
+
+                                    //mostro i bottoni
+                                    setGone(progresspositivi, progressnegativi);
+                                    setVisible(bottonepositivi, bottonenegativi);
+
+                                    votoFatto = 1;
+                                    Store.add("recensione", recensione);
+                                    getUser().fattoVoto();
+                                    onScrollDownAction();
+                                }
+                            } catch(JSONException e) {
+                                errorBar("Errore", 3000);
+                            }
+                            stopCaricamento(200);
+                        }
+
+                        @Override
+                        public void noInternetConnection() {
+                            noInternetErrorBar();
+                            stopCaricamento(200);
+                        }
+                    }).execute(req);
+                }
+            }
+        });
+
+        bottonenegativi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d("Risultato Prima di negativo", String.valueOf(votoFatto));
+                if(votoFatto == -1) {
+                    errorBar(getResources().getString(R.string.gianegativo), 3000);
+                } else {
+                    JSONObject req = new JSONObject();
+                    try {
+                        req.put("voto", -1);
+                        req.put("id_recensione", recensione.getId());
+                        req.put("path", "vota_recensione");
+                        req.put("token", getToken());
+                    } catch(JSONException e) {
+                        Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
+                    }
+
+                    //mostro i caricamenti dei pulsanti
+                    setGone(bottonepositivi, bottonenegativi);
+                    setVisible(progresspositivi, progressnegativi);
+
+                    //chiedo una richiesta veloce al server per la votazione
+                    new Request(new RequestCallback() {
+                        @Override
+                        public void inTheEnd(JSONObject a) {
+                            try {
+                                if(a.getString("status").equals("OK")) {
+                                    successBar("Voto Aggiunto correttamente", 3000);
+
+                                    //se non avevo votato niente
+                                    if(votoFatto == 0) {
+                                        pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() + 1);
+                                        recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
+                                    } else {
+                                        //se l'utente aveva già votato positivo
+                                        if(votoFatto == 1) {
+                                            pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() - 1);
+                                            pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() + 1);
+                                            recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
+                                        }
+                                    }
+
+                                    bottonepositivi.setBackgroundResource(R.drawable.bottone_verdino);
+                                    bottonepositivi.setEnabled(true);
+                                    bottonenegativi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
+                                    bottonenegativi.setEnabled(false);
+
+                                    //mostro i bottoni
+                                    setGone(progresspositivi, progressnegativi);
+                                    setVisible(bottonepositivi, bottonenegativi);
+
+                                    votoFatto = -1;
+                                    Store.add("recensione", recensione);
+                                    getUser().fattoVoto();
+                                    onScrollDownAction();
+                                } else {
+                                    errorBar("Già votato", 3000);
+                                }
+                            } catch(JSONException e) {
+                                errorBar("Errore", 3000);
+                            }
+                            stopCaricamento(200);
+                        }
+
+                        @Override
+                        public void noInternetConnection() {
+                            noInternetErrorBar();
+                            stopCaricamento(200);
+                        }
+                    }).execute(req);
+
+                }
+                //negativi.setText(String.valueOf(Integer.valueOf(negativi.getText().toString()) - 1));
+                //TODO definire limite cliccabile dall'utente
+            }
+        });
+
+        //permetto la segnalazione
+        segnala.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //instanzio un DialogFragment per ricevere la segnalazione dall'utente
+                FragmentManager fm = getSupportFragmentManager();
+                MyDialogFragment alertDialog = MyDialogFragment.newInstance(ctx.getResources().getString(R.string.titolo_segnalazione_recensione));
+                alertDialog.show(fm, "fragment_segnalazione");
+                //riceverò i risultati in onFinishEditDialog(testo inserito)
+            }
+        });
 
         pointAnimationPositivi.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             boolean mMeasured = false;
@@ -410,8 +443,8 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
 
         //prima controllo che sia attivato
         if(isActivated()) {
-            //poi controllo che la recensione non sia sua e che possa fare voti
-            if(!(recensione.getUtente().getId() == getUser().getId()) && getUser().canVoto()) {
+            //poi controllo che la recensione non sia sua
+            if(!(recensione.getUtente().getId() == getUser().getId())) {
                 JSONObject req = new JSONObject();
                 try {
                     req.put("id_recensione", recensione.getId());
@@ -427,20 +460,21 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                     public void inTheEnd(JSONObject a) {
                         try {
                             if(a.getString("status").equals("OK")) {
-                                if(a.getInt("result") == 1) {
-                                    votoFatto = 1;
-                                    bottonepositivi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
-                                    bottonepositivi.setEnabled(false);
-                                } else {
-                                    if(a.getInt("result") == -1) {
-                                        votoFatto = -1;
-                                        bottonenegativi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
-                                        bottonenegativi.setEnabled(false);
+                                if(getUser().canVoto() || a.getInt("result") != 0) {
+                                    if(a.getInt("result") == 1) {
+                                        votoFatto = 1;
+                                        bottonepositivi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
+                                        bottonepositivi.setEnabled(false);
+                                    } else {
+                                        if(a.getInt("result") == -1) {
+                                            votoFatto = -1;
+                                            bottonenegativi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
+                                            bottonenegativi.setEnabled(false);
+                                        }
                                     }
+                                    setGone(progressnegativi, progresspositivi);
+                                    setVisible(bottonenegativi, bottonepositivi);
                                 }
-                                setGone(progressnegativi, progresspositivi);
-                                setVisible(bottonenegativi, bottonepositivi);
-
                             } else {
                                 errorBar(getResources().getString(R.string.errore_server), 3000);
                             }
@@ -455,6 +489,8 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                     }
                 }).execute(req);
             }
+
+
         }
     }
 }

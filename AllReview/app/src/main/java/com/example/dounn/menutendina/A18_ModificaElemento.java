@@ -181,8 +181,8 @@ public class A18_ModificaElemento extends SuperActivity {
         Log.e("Successo", "Entering send changes");
 
         boolean updateCategoria = modificaCategoria.isChecked();
-        final boolean updateNome = modificaNomeElemento.isChecked();
-        final boolean updateDescrizione = modificaDescrElemento.isChecked();
+        boolean updateNome = modificaNomeElemento.isChecked();
+        boolean updateDescrizione = modificaDescrElemento.isChecked();
 
         int newCategoria = 0;
         String newNome = null;

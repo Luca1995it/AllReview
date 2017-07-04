@@ -233,7 +233,7 @@ public class A21_InserisciElemento extends SuperActivity {
     public void crea() {
         if(controlliElementi()) {
             Utility.hideSoftKeyboard(A21_InserisciElemento.this);
-            startCaricamentoTimeout(0, 20000, getResources().getString(R.string.Loading_ele));
+            startCaricamento(0, getResources().getString(R.string.Loading_ele));
             JSONObject req = new JSONObject();
             try {
                 req.put("token", getToken());

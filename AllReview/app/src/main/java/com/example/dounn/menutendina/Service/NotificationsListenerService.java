@@ -44,43 +44,46 @@ public class NotificationsListenerService extends GcmListenerService {
             Gson gson = new Gson();
             final UtenteLogged user = gson.fromJson(json, UtenteLogged.class);
 
-            final int id_not = bundle.getInt("id_notifica");
-            final int id_utente = bundle.getInt("id_utente");
+            final int id_not = Integer.valueOf(bundle.getString("id_notifica"));
+            final int id_utente = Integer.valueOf(bundle.getString("id_utente"));
 
             if(user.getId() != id_utente) return;
 
             Log.e("Service", "Response not_id: " + id_not);
 
-            try{
+            try {
                 JSONObject req = new JSONObject();
-                req.put("token",user.getToken());
-                req.put("path","notifica_from_id");
-                req.put("id_notifica",id_not);
+                req.put("token", user.getToken());
+                req.put("path", "notifica_from_id");
+                req.put("id_notifica", id_not);
                 new Request(new RequestCallback() {
                     @Override
                     public void inTheEnd(JSONObject a) {
                         try {
-                            if(a.getString("status").equals("OK")){
+                            if(a.getString("status").equals("OK")) {
                                 Notifica notifica = new Notifica(a.getJSONObject("result"), ctx);
 
                                 Intent intent = new Intent(ctx, A14_Notifiche.class);
-                                PendingIntent intent2 = PendingIntent.getBroadcast(ctx, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                PendingIntent intent2 = PendingIntent.getActivity(ctx, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                                 NotificationCompat.Builder mBuilder =
                                         new NotificationCompat.Builder(ctx)
                                                 .setSmallIcon(R.mipmap.logo2)
                                                 .setContentTitle("AllReview")
+                                                .setWhen(System.currentTimeMillis())
                                                 .setContentText(notifica.toString())
                                                 .setContentIntent(intent2)
                                                 .setTicker("All Review Notification")
                                                 .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND);
+                                mBuilder.setAutoCancel(true);
 
                                 mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
                                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                                 notificationManager.notify(1, mBuilder.build());
+
                             }
 
-                        }catch(JSONException e){
+                        } catch(JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -90,10 +93,9 @@ public class NotificationsListenerService extends GcmListenerService {
 
                     }
                 }).execute(req);
-            }catch(JSONException e){
+            } catch(JSONException e) {
                 e.printStackTrace();
             }
-
 
 
         } catch(Exception e) {

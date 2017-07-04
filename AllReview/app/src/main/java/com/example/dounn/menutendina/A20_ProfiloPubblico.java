@@ -364,7 +364,7 @@ public class A20_ProfiloPubblico extends SuperActivity{
     void updateUser(final int id_utente) {
         synchronized(lockUpdateUser) {
             startCaricamento(100, getResources().getString(R.string.Get_user));
-            Log.e("Successo", "Starting user update");
+            Log.e("Successo", "Starting user init");
             try {
                 JSONObject req = new JSONObject();
                 req.put("id_utente", id_utente);

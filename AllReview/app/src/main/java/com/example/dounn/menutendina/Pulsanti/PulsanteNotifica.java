@@ -37,7 +37,7 @@ public class PulsanteNotifica {
 
         //notifiche TODO NUMERO DI NOTIFICHE
 
-        textView.setText("");
+        textView.setText("0");
         imageButton.setOnClickListener(new View.OnClickListener() {
 
             @Override

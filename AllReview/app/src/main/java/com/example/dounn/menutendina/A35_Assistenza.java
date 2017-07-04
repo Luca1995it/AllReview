@@ -3,10 +3,13 @@ package com.example.dounn.menutendina;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.example.dounn.menutendina.Utility.Utility;
 
 
 public class A35_Assistenza extends SuperActivity {
@@ -22,6 +25,22 @@ public class A35_Assistenza extends SuperActivity {
         problemaAssistenza = (EditText) findViewById(R.id.etProblemaAssistenza);
         domandaAssistenza = (EditText) findViewById(R.id.edDomanda_Assistenza);
 
+        problemaAssistenza.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(!((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP));
+                return false;
+            }
+        });
+
+        domandaAssistenza.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.getParent().requestDisallowInterceptTouchEvent(!((event.getAction() & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_UP));
+                return false;
+            }
+        });
+
         final Button btnDomandaAssistenza = (Button) findViewById(R.id.btnOK);
 
 
@@ -29,6 +48,7 @@ public class A35_Assistenza extends SuperActivity {
             @Override
             public void onClick(View v) {
                 if(controlli()) {
+                    Utility.hideSoftKeyboard(A35_Assistenza.this);
                     String subject = domandaAssistenza.getText().toString();
                     String body = problemaAssistenza.getText().toString();
                     String[] address = {"allreviewapp@gmail.com"};

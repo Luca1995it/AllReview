@@ -216,10 +216,10 @@
     <string name="gianegativo">You have already added a negative mark for this review</string>
     <string name="terminati_voti">You have already used all available marks for today</string>
     <string name="titolo_segnalazione_recensione">Report this review</string>
-    <string name="nuovaRecOggetto">{1} received a new review</string>
-    <string name="nuovaRecUtente">{1} published a new review</string>
-    <string name="nuovoVotoMiaRec">Your review on the element {1} has been voted</string>
-    <string name="nuovaRispDom">{1} answered one of your questions</string>
+    <string name="nuovaRecOggetto">{0} received a new review</string>
+    <string name="nuovaRecUtente">{0} published a new review</string>
+    <string name="nuovoVotoMiaRec">Your review on the element {0} has been voted</string>
+    <string name="nuovaRispDom">{0} answered one of your questions</string>
     <string name="miaRispTop">Your answer has been marked as TOP</string>
     <string name="notificaDefault">There are new notify</string>
     <string name="prosegui">Prosegui</string>
@@ -263,4 +263,5 @@
     <string name="rimuovi_preferiti">Remove from favorites</string>
     <string name="not_available">n.a.</string>
     <string name="not_logged">You have to be logged in to insert answers</string>
+    <string name="personal_email">Current email address: {0}</string>
 </resources>

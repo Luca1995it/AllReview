@@ -101,7 +101,7 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
         Notifica not = getItem(i);
 
         viewHolder.notificaTx.setText(not.toString());
-        viewHolder.notificaData.setText(context.getResources().getString(R.string.Data) + " " + not.reduceData());
+        viewHolder.notificaData.setText(context.getResources().getString(R.string.Data) + " " + not.completeData());
         viewHolder.notificaImg.setFotoPath(not.getFoto());
     }
 

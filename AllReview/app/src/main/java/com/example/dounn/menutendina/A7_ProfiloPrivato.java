@@ -36,6 +36,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
     private TextView myTextProgressFine;
     private TextView myTextLevelInit;
     private TextView myTextLevelFine;
+    private TextView infoEmail;
 
     private TextView pointsAndLevel;
 
@@ -67,6 +68,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
         pointsAndLevel = (TextView) findViewById(R.id.points_and_level);
 
         infoMaxUtenteText = (TextView) findViewById(R.id.info_max_utente_text);
+        infoEmail = (TextView) findViewById(R.id.info_email);
 
         myTextProgress = (TextView) findViewById(R.id.myTextProgress);
         myTextProgressInit = (TextView) findViewById(R.id.myTextProgressInit);
@@ -224,6 +226,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
             maxString = java.text.MessageFormat.format(maxString, new String[]{maxRec, maxVoti, maxDom, doneRec, doneVoti, doneDom});
 
             infoMaxUtenteText.setText(maxString);
+            infoEmail.setText(java.text.MessageFormat.format(getResources().getString(R.string.personal_email), getUser().getEmail()));
 
             myTextProgressInit.setText(String.valueOf(pointsDown));
             myTextProgressFine.setText(String.valueOf(pointsUp));
