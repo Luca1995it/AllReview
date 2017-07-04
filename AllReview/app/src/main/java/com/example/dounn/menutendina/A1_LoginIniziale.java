@@ -199,7 +199,7 @@ public class A1_LoginIniziale extends SuperActivity {
                                 } catch(JSONException e) {
                                     Log.e("errore conversione login json,", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
                                     stopCaricamento(100);
-                                    errorBar(getResources().getString(R.string.errore_server),2000);
+                                    errorBar(getResources().getString(R.string.errore_server), 2000);
                                 }
                             }
 
@@ -307,11 +307,12 @@ public class A1_LoginIniziale extends SuperActivity {
                     if(password1Registrazione.getText().toString().length() >= 8
                             && usernameRegistrazione.getText().toString().length() >= 3) {
                         Utility.hideSoftKeyboard(A1_LoginIniziale.this);
-                        startCaricamento(300, "Registering");
+
                         //creo la richiesta JSON
 
                         JSONObject req = new JSONObject();
                         try {
+                            startCaricamento(0, "Registering");
                             //req.put("username","Luca1995");
                             //req.put("password","ziocan");
                             req.put("nome", usernameRegistrazione.getText().toString());

@@ -12,6 +12,8 @@ import com.example.dounn.menutendina.Database.Notifica;
 import com.example.dounn.menutendina.Utility.GenericRequest;
 import com.example.dounn.menutendina.Utility.Request;
 import com.example.dounn.menutendina.Utility.RequestCallback;
+import com.example.dounn.menutendina.Utility.Utility;
+import com.google.gson.annotations.Until;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -60,6 +62,7 @@ public class A14_Notifiche extends SuperActivity {
                     notifiche.remove(position);
                     mAdapter.notifyDataSetChanged();
                     new GenericRequest().execute(req);
+                    Utility.notifiche.getNotificationNumber(getToken());
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }

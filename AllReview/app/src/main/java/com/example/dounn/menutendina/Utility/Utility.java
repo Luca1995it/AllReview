@@ -140,4 +140,89 @@ public class Utility {
             return numeroNotifiche;
         }
     }
+
+    public static String catchCategoria(String Categoria) {
+        String traduzione;
+        switch (Categoria) {
+            case "Abbigliamento":
+                traduzione = context.getResources().getString(R.string.Clothing);
+                break;
+            case "Arte & Antiquariato":
+                traduzione = context.getResources().getString(R.string.ArtAndAntiques);
+                break;
+            case "Auto e Moto":
+                traduzione = context.getResources().getString(R.string.CarsAndMotorcycles);
+                break;
+            case "Bellezza & Salute":
+                traduzione =  context.getResources().getString(R.string.BeautyAndHealth);
+                break;
+            case "Biglietti ed eventi":
+                traduzione = context.getResources().getString(R.string.TicketAndEvents);
+                break;
+            case "Casa, Arredamento & Bricolage":
+                traduzione = context.getResources().getString(R.string.HomeFurnitureAndDIY);
+                break;
+            case "Collezionismo":
+                traduzione = context.getResources().getString(R.string.Collectibles);
+                break;
+            case "Commercio ed industria":
+                traduzione = context.getResources().getString(R.string.TradeAndIndustry);
+                break;
+            case "Elettrodomestici":
+                traduzione = context.getResources().getString(R.string.HomeApplication);
+                break;
+            case "Film, Fotografia e Video":
+                traduzione = context.getResources().getString(R.string.FilmPhotographyAndVideo);
+                break;
+            case "Giocattoli & Modellismo":
+                traduzione = context.getResources().getString(R.string.ToysAndModelling);
+                break;
+            case "Libri, Fumetti e Lettori elettronici":
+                traduzione = context.getResources().getString(R.string.BooksComicsAndEletronic);
+                break;
+            case "Informatica e Mondo Online":
+                traduzione = context.getResources().getString(R.string.ComputerScience);
+                break;
+            case "Orologi e Gioielli":
+                traduzione = context.getResources().getString(R.string.Watches);
+                break;
+            case "Attrezzatura Sportiva":
+                traduzione =  context.getResources().getString(R.string.Sport);
+                break;
+            case "Telefonia":
+                traduzione =  context.getResources().getString(R.string.Smartphone);
+                break;
+            case "Televisori":
+                traduzione =  context.getResources().getString(R.string.Televisions);
+                break;
+            case "HiFi, Amplificatori e Casse":
+                traduzione =  context.getResources().getString(R.string.HiFi);
+                break;
+            case "Videogiochi e Console":
+                traduzione =  context.getResources().getString(R.string.Games);
+                break;
+            case "Cucina":
+                traduzione =  context.getResources().getString(R.string.Kitchen);
+                break;
+            case "Elettronica e componentistica":
+                traduzione = context.getResources().getString(R.string.Eletronics);
+                break;
+            case "Hotel & Alloggi":
+                traduzione = context.getResources().getString(R.string.Hotels);
+                break;
+            case "Infanzia":
+                traduzione = context.getResources().getString(R.string.Child);
+                break;
+            case "Scuola, Università ed Ufficio":
+                traduzione = context.getResources().getString(R.string.School);
+                break;
+            case "Computer & Accessori":
+                traduzione = context.getResources().getString(R.string.Computer);
+                break;
+            default:
+                traduzione = "Default";
+        }
+        return traduzione;
+
+    }
 }

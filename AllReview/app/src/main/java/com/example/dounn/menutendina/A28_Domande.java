@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.example.dounn.menutendina.Adapters.DomandeFilterAdapter;
 import com.example.dounn.menutendina.Database.Elemento;
 import com.example.dounn.menutendina.Database.Store;
+import com.example.dounn.menutendina.Database.SuperDB;
 import com.example.dounn.menutendina.Utility.Request;
 import com.example.dounn.menutendina.Utility.RequestCallback;
 
@@ -25,7 +26,7 @@ import org.json.JSONObject;
  * Created by dounn on 16/06/2017.
  */
 
-public class A28_Domande extends LoggedActivity {
+public class A28_Domande extends SuperActivity {
 
     private RecyclerView recyclerView;
     private EditText etSearch;

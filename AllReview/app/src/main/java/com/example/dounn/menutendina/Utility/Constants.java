@@ -13,5 +13,5 @@ public class Constants {
     public static int pointsNumberAnimationCircle = 8;
     public static int maxDatabaseDimension = 100;
     public static long imageViewLoadDuration = 500;
-    public static int notificaUpdateTime = 30;
+    public static int notificaUpdateTime = 5;
 }

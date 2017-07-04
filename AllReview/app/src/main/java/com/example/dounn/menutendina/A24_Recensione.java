@@ -51,6 +51,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
     private Recensione recensione;
     //di default non ho niente votato
     private int votoFatto = 0;
+    private TextView textvieVotazioneStelleA24;
 
     CircleView pointAnimationPositivi;
     CircleView pointAnimationNegativi;
@@ -74,7 +75,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
         recensore = (TextView) findViewById(R.id.utente_recensore_a24);
         dataRecensione = (TextView) findViewById(R.id.data_recensione_a24);
         sezioneVoti = (LinearLayout) findViewById(R.id.sezione_voti);
-
+        textvieVotazioneStelleA24 = (TextView) findViewById(R.id.textvie_votazione_stelle_a24);
 
         pointAnimationPositivi = (CircleView) findViewById(R.id.voti_positivi);
         pointAnimationNegativi = (CircleView) findViewById(R.id.voti_negativi);
@@ -101,6 +102,8 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
 
 
     void update() {
+        textvieVotazioneStelleA24.setText(String.format("%.1f", (recensione.getVoto())));
+
         immagineRecensione.setFotoPath(recensione.getFotopath());
         immagineRecensione.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,11 +138,11 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
         });
 
         //controllo di essere un utente loggato per vedere tutte le funzionalità
-        if (!isActivated()) {
+        if(!isActivated()) {
             setGone(bottonepositivi, bottonenegativi, segnala, progressnegativi, progresspositivi);
         } else {
             //se la recensione è mia nascondo tutto
-            if (recensione.getUtente().getId() == getUser().getId()) {
+            if(recensione.getUtente().getId() == getUser().getId()) {
                 setGone(bottonepositivi, bottonenegativi, segnala, progressnegativi, progresspositivi);
             } else {
                 //permetto la segnalazione
@@ -155,17 +158,16 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                 });
 
                 //controllo anche di non aver esaurito i voti
-                if (!getUser().canVoto()) {
+                if(!getUser().canVoto()) {
                     setGone(bottonepositivi, bottonenegativi, progressnegativi, progresspositivi);
                     errorBar(getResources().getString(R.string.terminati_voti), 3000);
-                }
-                else {
+                } else {
                     bottonepositivi.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Log.d("Risultato Prima di positivo voto", String.valueOf(votoFatto));
 
-                            if (votoFatto == 1) {
+                            if(votoFatto == 1) {
                                 errorBar(getResources().getString(R.string.giapositivo), 3000);
                             } else {
 
@@ -175,7 +177,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                                     req.put("id_recensione", recensione.getId());
                                     req.put("path", "vota_recensione");
                                     req.put("token", getToken());
-                                } catch (JSONException e) {
+                                } catch(JSONException e) {
                                     Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
                                 }
 
@@ -188,17 +190,17 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                                     @Override
                                     public void inTheEnd(JSONObject a) {
                                         try {
-                                            if (a.getString("status").equals("OK")) {
+                                            if(a.getString("status").equals("OK")) {
                                                 successBar("Voto Aggiunto correttamente", 3000);
 
                                                 //se non avevo votato niente
-                                                if (votoFatto == 0) {
+                                                if(votoFatto == 0) {
                                                     pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() + 1);
                                                     Log.d("Risultato positivi dopo +1", String.valueOf(pointAnimationPositivi.getNumber()));
                                                     recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
                                                 } else {
                                                     //se l'utente aveva già votato negativo
-                                                    if (votoFatto == -1) {
+                                                    if(votoFatto == -1) {
                                                         Log.d("Risultato prima negativi", String.valueOf(pointAnimationNegativi.getNumber()));
                                                         Log.d("Risultato prima positivi", String.valueOf(pointAnimationPositivi.getNumber()));
                                                         pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() + 1);
@@ -223,7 +225,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                                                 getUser().fattoVoto();
                                                 onScrollDownAction();
                                             }
-                                        } catch (JSONException e) {
+                                        } catch(JSONException e) {
                                             errorBar("Errore", 3000);
                                         }
                                         stopCaricamento(200);
@@ -244,7 +246,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                         public void onClick(View v) {
 
                             Log.d("Risultato Prima di negativo", String.valueOf(votoFatto));
-                            if (votoFatto == -1) {
+                            if(votoFatto == -1) {
                                 errorBar(getResources().getString(R.string.gianegativo), 3000);
                             } else {
                                 JSONObject req = new JSONObject();
@@ -253,7 +255,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                                     req.put("id_recensione", recensione.getId());
                                     req.put("path", "vota_recensione");
                                     req.put("token", getToken());
-                                } catch (JSONException e) {
+                                } catch(JSONException e) {
                                     Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
                                 }
 
@@ -266,16 +268,16 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                                     @Override
                                     public void inTheEnd(JSONObject a) {
                                         try {
-                                            if (a.getString("status").equals("OK")) {
+                                            if(a.getString("status").equals("OK")) {
                                                 successBar("Voto Aggiunto correttamente", 3000);
 
                                                 //se non avevo votato niente
-                                                if (votoFatto == 0) {
+                                                if(votoFatto == 0) {
                                                     pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() + 1);
                                                     recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
                                                 } else {
                                                     //se l'utente aveva già votato positivo
-                                                    if (votoFatto == 1) {
+                                                    if(votoFatto == 1) {
                                                         pointAnimationPositivi.setNumber(pointAnimationPositivi.getNumber() - 1);
                                                         pointAnimationNegativi.setNumber(pointAnimationNegativi.getNumber() + 1);
                                                         recensione.setVoti(pointAnimationPositivi.getNumber(), pointAnimationNegativi.getNumber());
@@ -298,7 +300,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                                             } else {
                                                 errorBar("Già votato", 3000);
                                             }
-                                        } catch (JSONException e) {
+                                        } catch(JSONException e) {
                                             errorBar("Errore", 3000);
                                         }
                                         stopCaricamento(200);
@@ -325,7 +327,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
 
             @Override
             public void onGlobalLayout() {
-                if (!mMeasured) {
+                if(!mMeasured) {
                     pointAnimationPositivi.setColor(getResources().getColor(R.color.bottone_login));
                     CircleAnimation animation = new CircleAnimation(pointAnimationPositivi, true);
                     animation.setDuration(2000);
@@ -343,7 +345,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
 
             @Override
             public void onGlobalLayout() {
-                if (!mMeasured) {
+                if(!mMeasured) {
                     pointAnimationNegativi.setColor(getResources().getColor(R.color.colore_rosso_segnalazione));
                     CircleAnimation animation = new CircleAnimation(pointAnimationNegativi, false);
                     animation.setDuration(2000);
@@ -355,7 +357,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
             }
         });
 
-        if (getIntent().hasExtra("focus")) {
+        if(getIntent().hasExtra("focus")) {
             Utility.highLight(sezioneVoti);
         }
     }
@@ -369,19 +371,19 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
             req.put("token", getToken());
             req.put("motivazione", inputText);
             req.put("path", "segnala_elemento");
-        } catch (JSONException e) {
+        } catch(JSONException e) {
             Log.e("Errore nella creazione json richiesta segnalazione recensione", e.toString());
         }
         new Request(new RequestCallback() {
             @Override
             public void inTheEnd(JSONObject a) {
                 try {
-                    if (!a.getString("status").equals("ERROR")) {
+                    if(!a.getString("status").equals("ERROR")) {
                         successBar("Segnalazione avvenuta correttamente", 3000);
                     } else {
                         errorBar("Errore nell'invio della segnalazione", 3000);
                     }
-                } catch (JSONException e) {
+                } catch(JSONException e) {
                     Log.e("Errore nel post ricezione da richiesta segnalazione elemento", e.toString());
                 }
             }
@@ -407,15 +409,15 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
         recensione = (Recensione) Store.get("recensione");
 
         //prima controllo che sia attivato
-        if (isActivated()) {
+        if(isActivated()) {
             //poi controllo che la recensione non sia sua e che possa fare voti
-            if (!(recensione.getUtente().getId() == getUser().getId()) && getUser().canVoto()) {
+            if(!(recensione.getUtente().getId() == getUser().getId()) && getUser().canVoto()) {
                 JSONObject req = new JSONObject();
                 try {
                     req.put("id_recensione", recensione.getId());
                     req.put("path", "has_voto");
                     req.put("token", getToken());
-                } catch (JSONException e) {
+                } catch(JSONException e) {
                     Log.e("Risultato creazione json per per votazione positiva errore :", e.toString());
                 }
 
@@ -424,13 +426,13 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                     @Override
                     public void inTheEnd(JSONObject a) {
                         try {
-                            if (a.getString("status").equals("OK")) {
-                                if (a.getInt("result") == 1) {
+                            if(a.getString("status").equals("OK")) {
+                                if(a.getInt("result") == 1) {
                                     votoFatto = 1;
                                     bottonepositivi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
                                     bottonepositivi.setEnabled(false);
                                 } else {
-                                    if (a.getInt("result") == -1) {
+                                    if(a.getInt("result") == -1) {
                                         votoFatto = -1;
                                         bottonenegativi.setBackgroundResource(R.drawable.bottone_grigio_anonimo);
                                         bottonenegativi.setEnabled(false);
@@ -442,7 +444,7 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                             } else {
                                 errorBar(getResources().getString(R.string.errore_server), 3000);
                             }
-                        } catch (JSONException e) {
+                        } catch(JSONException e) {
                             errorBar(getResources().getString(R.string.errore_server), 3000);
                         }
                     }

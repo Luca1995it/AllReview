@@ -79,11 +79,11 @@ public class ElementoAdapter extends RecyclerView.Adapter<ElementoAdapter.ViewHo
             viewHolder.votazione.setText(ctx.getResources().getString(R.string.recensioni_non_presenti));
         } else {
             viewHolder.ratingBar.setProgress((int) (elemento.getRating() * 20));
-            viewHolder.votazione.setText(String.format("%.1f", (elemento.getRating()) + 0.05));
+            viewHolder.votazione.setText(String.format("%.1f", (elemento.getRating())));
         }
 
         viewHolder.descrizioneElemento.setText(elemento.getDescr());
-        viewHolder.categoria.setText(elemento.getCategoria());
+        viewHolder.categoria.setText(Utility.catchCategoria(elemento.getCategoria()));
         if(elemento.getFotoNumber() > 0) {
             viewHolder.image.setFotoPath(elemento.getFotos().get(0).getPath());
         }

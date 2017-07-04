@@ -26,7 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class A20_ProfiloPubblico extends LoggedActivity {
+public class A20_ProfiloPubblico extends SuperActivity{
 
     private Utente utenteRed;
     private int id_utente;

@@ -15,9 +15,12 @@ import com.example.dounn.menutendina.A14_Notifiche;
 import com.example.dounn.menutendina.Database.Notifica;
 import com.example.dounn.menutendina.Database.UtenteLogged;
 import com.example.dounn.menutendina.R;
+import com.example.dounn.menutendina.Utility.Request;
+import com.example.dounn.menutendina.Utility.RequestCallback;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -32,33 +35,66 @@ public class NotificationsListenerService extends GcmListenerService {
         Log.e("Service", "message received: " + s);
         Log.e("Service", "Content: " + bundle.toString());
 
-        try {
-            String not = bundle.getString("notifica");
-            Log.e("Service", "Response not: " + not);
-            Notifica notifica = new Notifica(new JSONObject(not), this);
 
+        try {
+            final Context ctx = this;
             SharedPreferences pref = this.getSharedPreferences("MyPref", 0);
             String json = pref.getString("user", "");
             if(json.equals("")) throw new Exception("prefError");
             Gson gson = new Gson();
-            UtenteLogged user = gson.fromJson(json, UtenteLogged.class);
-            if(user.getId() != notifica.getIdProprietario()) throw new Exception("utente diverso");
+            final UtenteLogged user = gson.fromJson(json, UtenteLogged.class);
 
-            Intent intent = new Intent(this, A14_Notifiche.class);
-            PendingIntent intent2 = PendingIntent.getBroadcast(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            final int id_not = bundle.getInt("id_notifica");
+            final int id_utente = bundle.getInt("id_utente");
 
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.mipmap.ic_cloud_queue_black_24dp)
-                            .setContentTitle("AllReview")
-                            .setContentText(notifica.toString())
-                            .setContentIntent(intent2)
-                            .setTicker("All Review Notification")
-                            .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND);
+            if(user.getId() != id_utente) return;
 
-            mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(1, mBuilder.build());
+            Log.e("Service", "Response not_id: " + id_not);
+
+            try{
+                JSONObject req = new JSONObject();
+                req.put("token",user.getToken());
+                req.put("path","notifica_from_id");
+                req.put("id_notifica",id_not);
+                new Request(new RequestCallback() {
+                    @Override
+                    public void inTheEnd(JSONObject a) {
+                        try {
+                            if(a.getString("status").equals("OK")){
+                                Notifica notifica = new Notifica(a.getJSONObject("result"), ctx);
+
+                                Intent intent = new Intent(ctx, A14_Notifiche.class);
+                                PendingIntent intent2 = PendingIntent.getBroadcast(ctx, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(ctx)
+                                                .setSmallIcon(R.mipmap.logo2)
+                                                .setContentTitle("AllReview")
+                                                .setContentText(notifica.toString())
+                                                .setContentIntent(intent2)
+                                                .setTicker("All Review Notification")
+                                                .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND);
+
+                                mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+                                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                                notificationManager.notify(1, mBuilder.build());
+                            }
+
+                        }catch(JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void noInternetConnection() {
+
+                    }
+                }).execute(req);
+            }catch(JSONException e){
+                e.printStackTrace();
+            }
+
+
 
         } catch(Exception e) {
             e.printStackTrace();

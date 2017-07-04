@@ -27,7 +27,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
  * Created by dounn on 17/06/2017.
  */
 
-public class A29_Risposte extends LoggedActivity {
+public class A29_Risposte extends SuperActivity {
 
     private Domanda domanda;
 
@@ -69,12 +69,22 @@ public class A29_Risposte extends LoggedActivity {
 
         //Inserisci nuova risposta
         inserisciRisposta = (Button) findViewById(R.id.inserisci_risposta);
-        inserisciRisposta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ctx, A32_InserisciRisposta.class));
-            }
-        });
+
+        if(isActivated()) {
+            inserisciRisposta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(ctx, A32_InserisciRisposta.class));
+                }
+            });
+        } else {
+            inserisciRisposta.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    errorBar(getResources().getString(R.string.not_logged),2000);
+                }
+            });
+        }
 
         //Lista risposte
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -159,7 +169,7 @@ public class A29_Risposte extends LoggedActivity {
 
         adapter = new RisposteAdapter(this, domanda.getRisposte(), focusId, scegliTopRisposta);
 
-        if(domanda.getRisposte().size()==0){
+        if(domanda.getRisposte().size() == 0) {
             risposteUtenti.setText(getResources().getString(R.string.risposte_utenti_non));
         }
         LinearLayoutManager llm = new LinearLayoutManager(this);

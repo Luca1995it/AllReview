@@ -75,6 +75,12 @@ public class A19_PersoneSeguite extends LoggedActivity {
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        onScrollDownAction();
+    }
+
+    @Override
     public void onScrollDownAction() {
         super.onScrollDownAction();
 

@@ -25,6 +25,7 @@ import com.example.dounn.menutendina.OtherView.MyDialogFragment;
 import com.example.dounn.menutendina.Utility.GenericRequest;
 import com.example.dounn.menutendina.Utility.Request;
 import com.example.dounn.menutendina.Utility.RequestCallback;
+import com.example.dounn.menutendina.Utility.Utility;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -166,12 +167,14 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
 
         //setto il titolo, la categoria, la votazione e la descrizione
         titoloElemento.setText(elemento.getNome());
-        getCategoria.setText(elemento.getCategoria());
+        getCategoria.setText(Utility.catchCategoria(elemento.getCategoria()));
         votazioneElemento.setRating(elemento.getRating());
-        testoVotazioneElemento.setText(String.format("%.1f", (elemento.getRating())));
+        if(elemento.getRating() < 0) {
+            testoVotazioneElemento.setText(getResources().getString(R.string.not_available));
+        } else testoVotazioneElemento.setText(String.format("%.1f", (elemento.getRating())));
         descrizione.setText(elemento.getDescr());
 
-        Log.d("Risultati a27" , String.valueOf(elemento.getRating()));
+        Log.d("Risultati a27", String.valueOf(elemento.getRating()));
 
         //Richiesta per le recensioni dell'elemento *
         JSONObject req = new JSONObject();
@@ -442,9 +445,8 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
                     if(getUser().canRecensione()) {
                         Intent intent = new Intent(ctx, A16_CreaRecensione.class);
                         startActivity(intent);
-                    }
-                    else{
-                        errorBar(getResources().getString(R.string.non_puoi_fare_altre_recensioni) , 3000);
+                    } else {
+                        errorBar(getResources().getString(R.string.non_puoi_fare_altre_recensioni), 3000);
                     }
                 }
             }

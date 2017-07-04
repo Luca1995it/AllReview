@@ -1,6 +1,7 @@
 package com.example.dounn.menutendina.Database;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.dounn.menutendina.R;
 
@@ -8,9 +9,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
-import java.util.Date;
 
-import static com.example.dounn.menutendina.Database.Notifica.Tipo.*;
+import static com.example.dounn.menutendina.Database.Notifica.Tipo.MiaMigliorRisposta;
+import static com.example.dounn.menutendina.Database.Notifica.Tipo.NuovaRecensioneOggettoCheSeguo;
+import static com.example.dounn.menutendina.Database.Notifica.Tipo.NuovaRecensioneUtenteCheSeguo;
+import static com.example.dounn.menutendina.Database.Notifica.Tipo.NuovaRispostaMiaDomanda;
+import static com.example.dounn.menutendina.Database.Notifica.Tipo.NuovoVotoMiaRecensione;
 
 /**
  * Created by lucadiliello on 16/06/2017.
