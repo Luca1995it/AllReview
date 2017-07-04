@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.IntegerRes;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -173,9 +174,6 @@ public class A18_ModificaElemento extends SuperActivity {
             Toast.makeText(ctx, getResources().getString(R.string.Something_change), Toast.LENGTH_LONG).show();
             return;
         }
-        builder.setMessage("La risposta deve essere lunga almeno 20 caratteri");
-        alertDialog = builder.create();
-        alertDialog.show();
 
         startCaricamento(200, "Uploading changes");
         Log.e("Successo", "Entering send changes");

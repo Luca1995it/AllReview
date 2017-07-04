@@ -276,7 +276,7 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
 
         if(!isActivated()) {
             setGone(modificaElementoButton);
-        } else if(getUser().getLevel().getLivello() <= 18) {
+        } else if(getUser().getLevel().getLivello() < 18) {
             setGone(modificaElementoButton);
         } else
             modificaElementoButton.setOnClickListener(new View.OnClickListener() {
