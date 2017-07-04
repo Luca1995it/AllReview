@@ -273,4 +273,5 @@
     <string name="positivo">positivitly</string>
     <string name="negativo">negativitly</string>
     <string name="registrazione_succ">Ti sei registrato con successo</string>
+    <string name="punti">Points</string>
 </resources>

@@ -2,31 +2,30 @@
 
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/giallino"
-    android:orientation="horizontal"
-    app:cardCornerRadius="5dp"
-    app:cardUseCompatPadding="true">
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="5dp">
 
             <com.example.dounn.menutendina.OtherView.ImageViewLoading
                 android:id="@+id/foto_profilo"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_margin="2dp"
-                custom:image_style="normal"/>
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="3dp"
+                custom:image_style="circular"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -35,94 +34,134 @@
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:weightSum="15">
 
                     <TextView
                         android:id="@+id/nome_profilo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_weight="11"
                         android:background="@drawable/nome_utente"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:linksClickable="true"
                         android:maxLines="1"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
                         android:textColor="@color/white"
                         android:textColorLink="@android:color/holo_red_dark"/>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:text="@string/il"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4">
 
-                    <TextView
-                        android:id="@+id/orario"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/black"
-                        android:textStyle="italic|bold"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+                            android:text="@string/il"
+                            android:textSize="12sp"/>
+
+                        <TextView
+                            android:id="@+id/orario"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"
+                            android:textStyle="italic|bold"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/domanda_utente"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="1dp"
                     android:textColor="@color/black"/>
 
             </LinearLayout>
+
         </LinearLayout>
+
 
         <android.support.v7.widget.CardView
             android:id="@+id/settore_miglior_risposta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
-            android:background="@color/verdino_light"
-            android:padding="10dp">
+            app:cardBackgroundColor="@color/sfondo">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="25dp"
-                android:orientation="horizontal">
-
-                <com.example.dounn.menutendina.OtherView.ImageViewLoading
-                    android:id="@+id/foto_profilo_risposta"
-                    android:layout_width="45dp"
-                    android:layout_height="45dp"
-                    android:layout_margin="6dp"/>
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <com.example.dounn.menutendina.OtherView.ImageViewLoading
+                        android:id="@+id/foto_profilo_risposta"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:padding="3dp"
+                        custom:image_style="circular"/>
+
+                    <ImageButton
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/bottone_verde"
+                        android:src="@mipmap/ic_check_circle_black_24dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/utente_miglior_risposta"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="1dp"
                         android:background="@drawable/nome_utente"
                         android:ellipsize="end"
                         android:gravity="left"
                         android:linksClickable="true"
                         android:maxLines="1"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
                         android:textColor="@color/white"
                         android:textColorLink="@android:color/holo_red_dark"/>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="3dp">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -139,16 +178,20 @@
                             android:textSize="12sp"/>
                     </LinearLayout>
 
+
                     <TextView
                         android:id="@+id/miglior_risposta"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="1dp"
                         android:textColor="@color/black"/>
                 </LinearLayout>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
+
+
     </LinearLayout>
 </android.support.v7.widget.CardView>

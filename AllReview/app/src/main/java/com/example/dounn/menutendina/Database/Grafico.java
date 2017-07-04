@@ -46,7 +46,6 @@ public class Grafico extends SuperDB {
                 date[i] = (int) (System.currentTimeMillis() / 1000);
             }
         }
-        Log.e("Datapoint", punti.length + "");
     }
 
 

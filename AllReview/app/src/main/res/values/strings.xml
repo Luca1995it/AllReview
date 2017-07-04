@@ -290,4 +290,5 @@
     <string name="positivo">positivamente</string>
     <string name="negativo">negativamente</string>
     <string name="registrazione_succ">Ti sei registrato con successo</string>
+    <string name="punti">Punti</string>
 </resources>

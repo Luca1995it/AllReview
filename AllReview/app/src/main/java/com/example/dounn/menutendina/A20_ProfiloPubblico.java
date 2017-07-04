@@ -312,11 +312,6 @@ public class A20_ProfiloPubblico extends SuperActivity {
         final int finalLevel = 30;
         final int initLevel = 0;
 
-        String max_voti = "" + livelli.getMaxVoti();
-        String max_rec = "" + livelli.getMaxRec();
-        String max_dom = "" + livelli.getMaxDom();
-
-
         myTextProgressInit.setText(String.valueOf(points_down));
         myTextProgressFine.setText(String.valueOf(points_up));
 
@@ -324,7 +319,7 @@ public class A20_ProfiloPubblico extends SuperActivity {
         myTextLevelFine.setText(String.valueOf(finalLevel));
 
         myTextLevel.setText(getResources().getString(R.string.Livello) + " " + level);
-        myTextProgress.setText(getResources().getString(R.string.Punteggio) + " " + punteggio);
+        myTextProgress.setText(punteggio + "  " + getResources().getString(R.string.punti));
 
         final int max_state = 1000 * (punteggio - points_down) / (points_up - points_down);
 
@@ -333,6 +328,10 @@ public class A20_ProfiloPubblico extends SuperActivity {
 
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(utenteRed.getGrafico().getPunti());
+        series.setDrawDataPoints(true);
+        series.setDataPointsRadius(10);
+        series.setColor(getResources().getColor(R.color.barra));
+        series.setThickness(8);
         graph.addSeries(series);
 
         // use static labels for horizontal and vertical labels
@@ -378,16 +377,13 @@ public class A20_ProfiloPubblico extends SuperActivity {
                         try {
                             if(a.getString("status").equals("OK")) {
                                 // INIZIALIZZAZIONE DATI SCARICATI
-
                                 utenteRed = new Utente(a.getJSONObject("result"));
-
                                 showUser();
                                 stopCaricamento(200);
                             } else {
                                 noInternetErrorBar();
                                 stopCaricamento(200);
                             }
-
                         } catch(Exception e) {
                             e.printStackTrace();
                             stopCaricamento(200);

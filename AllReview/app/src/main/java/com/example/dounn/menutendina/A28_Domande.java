@@ -99,7 +99,7 @@ public class A28_Domande extends SuperActivity {
     }
 
     private void downloadData() {
-        startCaricamento(200, getResources().getString(R.string.Update));
+        startCaricamento(200, getResources().getString(R.string.aggiorno));
         JSONObject req = new JSONObject();
         try {
             req.put("path", "elemento");

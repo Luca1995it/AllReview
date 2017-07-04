@@ -3,6 +3,7 @@ package com.example.dounn.menutendina;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
@@ -235,7 +236,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
             myTextLevelFine.setText(String.valueOf(finalLevel));
 
             myTextLevel.setText(getResources().getString(R.string.Livello) + " " + level);
-            myTextProgress.setText(getResources().getString(R.string.Punteggio) + " " + punteggio);
+            myTextProgress.setText(punteggio + " " + getResources().getString(R.string.punti));
 
             final int maxState = 1000 * (punteggio - pointsDown) / (pointsUp - pointsDown);
 
@@ -243,6 +244,10 @@ public class A7_ProfiloPrivato extends LoggedActivity {
             levelProgress.setProgress(0);
 
             LineGraphSeries<DataPoint> series = new LineGraphSeries<>(getUser().getGrafico().getPunti());
+            series.setDrawDataPoints(true);
+            series.setDataPointsRadius(10);
+            series.setColor(getResources().getColor(R.color.barra));
+            series.setThickness(8);
             graph.addSeries(series);
 
             // use static labels for horizontal and vertical labels
