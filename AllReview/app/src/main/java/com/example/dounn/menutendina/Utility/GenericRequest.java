@@ -29,7 +29,7 @@ public class GenericRequest extends AsyncTask<JSONObject, Void, JSONObject> {
             URL url = new URL(Constants.serverAddress); // here is your URL path
 
             JSONObject postDataParams = params[0];
-            Log.d("params", postDataParams.toString());
+            Log.e("Server request", postDataParams.toString());
             trustAllHosts();
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setHostnameVerifier(DO_NOT_VERIFY);

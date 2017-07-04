@@ -13,7 +13,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -175,7 +174,7 @@ public class A1_LoginIniziale extends SuperActivity {
                             @Override
                             public void inTheEnd(JSONObject a) {
                                 try {
-                                    Log.d("Risultati accesso:", a.toString());
+
                                     //controllo lo stato della richiesta
                                     if(!a.getString("status").equals("ERROR")) {
                                         setUser(new UtenteLogged(a.getJSONObject("result").getJSONObject("utente")));
@@ -197,7 +196,6 @@ public class A1_LoginIniziale extends SuperActivity {
                                     }
                                     stopCaricamento(100);
                                 } catch(JSONException e) {
-                                    Log.e("errore conversione login json,", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
                                     stopCaricamento(100);
                                     errorBar(getResources().getString(R.string.errore_server), 2000);
                                 }
@@ -205,13 +203,11 @@ public class A1_LoginIniziale extends SuperActivity {
 
                             @Override
                             public void noInternetConnection() {
-                                Log.e("Successo", "No internet connection, starting errorbar");
                                 noInternetErrorBar();
                                 stopCaricamento(200);
                             }
                         }).execute(req);
                     } catch(JSONException e) {
-                        Log.e("Successo", "Errore:\n" + e);
                         noInternetErrorBar();
                         stopCaricamento(200);
                     }
@@ -239,7 +235,6 @@ public class A1_LoginIniziale extends SuperActivity {
                     req.put("email", usernameLogin.getText().toString());
                     req.put("path", "nuova_password");
                 } catch(JSONException e) {
-                    Log.d("errore:", "errore JSON registrazione");
                 }
 
                 new Request(new RequestCallback() {
@@ -251,7 +246,6 @@ public class A1_LoginIniziale extends SuperActivity {
                             passwordDimenticataLogin.setTextColor(Color.parseColor("#295d9e"));
                             passwordDimenticataLogin.setPaintFlags(0);
 
-                            Log.d("Risultati nuova password:", a.toString());
                             try {
                                 if(!a.getString("status").equals("ERROR")) {
                                     //se la richiesta è andata a buon mostro Toast di invio email
@@ -263,14 +257,12 @@ public class A1_LoginIniziale extends SuperActivity {
                                     cancellaMessaggioErroreLogin();
                                 }
                             } catch(JSONException e) {
-                                Log.e("errore post invio dati server nuova password", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                                e.printStackTrace();
                             }
                         } else {
                             //ridò al testo il colore spento
                             passwordDimenticataLogin.setTextColor(Color.parseColor("#295d9e"));
                             passwordDimenticataLogin.setPaintFlags(0);
-
-                            Log.e("Risultati accesso errore", "Errore nella connessione al server per cambio password");
                         }
 
                     }
@@ -326,7 +318,6 @@ public class A1_LoginIniziale extends SuperActivity {
                                 @Override
                                 public void inTheEnd(JSONObject a) {
                                     if(a != null) {
-                                        Log.d("Risultati registrazione:", a.toString());
                                         try {
                                             if(!a.getString("status").equals("ERROR")) {
 
@@ -351,13 +342,12 @@ public class A1_LoginIniziale extends SuperActivity {
                                                 }
                                             }
                                         } catch(JSONException e) {
-                                            Log.e("errore post invio dati server registrazione", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                                            e.printStackTrace();
                                         } finally {
                                             stopCaricamento(200);
                                         }
                                     } else {
                                         stopCaricamento(200);
-                                        Log.e("Risultati accesso errore", "Errore nella connessione al server nella Registrazione");
                                     }
                                 }
 
@@ -368,7 +358,7 @@ public class A1_LoginIniziale extends SuperActivity {
                                 }
                             }).execute(req);
                         } catch(JSONException e) {
-                            Log.d("errore:", "errore JSON registrazione");
+                            e.printStackTrace();
                         }
 
                     } else //se la password è più corta di 8 caratteri mostro errore
@@ -478,10 +468,8 @@ public class A1_LoginIniziale extends SuperActivity {
                                     public void onCompleted(JSONObject json, GraphResponse response) {
                                         if(response.getError() != null) {
                                             errorBar(getResources().getString(R.string.Error_Facebook), 3000);
-                                            Log.e("FACEBOOK", response.getError().toString());
                                         } else {
                                             try {
-                                                Log.e("FACEBOOK", "JSON Result " + String.valueOf(json));
 
                                                 final String strEmail = json.getString("email");
                                                 String strId = json.getString("id");
@@ -568,12 +556,12 @@ public class A1_LoginIniziale extends SuperActivity {
 
                     @Override
                     public void onCancel() {
-                        Log.d("TAG", "On cancel");
+                        noInternetErrorBar();
                     }
 
                     @Override
                     public void onError(FacebookException error) {
-                        Log.d("TAG", error.toString());
+                        noInternetErrorBar();
                     }
                 }
         );

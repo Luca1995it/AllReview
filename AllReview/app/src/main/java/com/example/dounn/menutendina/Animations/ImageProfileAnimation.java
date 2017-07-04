@@ -13,7 +13,6 @@ public class ImageProfileAnimation extends Animation{
 
     CircleImageViewSpecial image;
 
-
     public ImageProfileAnimation(CircleImageViewSpecial image) {
         this.image = image;
     }

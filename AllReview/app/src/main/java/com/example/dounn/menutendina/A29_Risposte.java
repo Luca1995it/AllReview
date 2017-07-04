@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -94,7 +93,7 @@ public class A29_Risposte extends SuperActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         domanda = (Domanda) Store.get("domanda");
-        Log.e("Domanda1", domanda + "");
+
         if(domanda != null) {
             init();
             enableOnScrollDownAction();
@@ -112,7 +111,6 @@ public class A29_Risposte extends SuperActivity {
                         try {
                             if(a.getString("status").equals("OK")) {
                                 domanda = new Domanda(a.getJSONObject("domanda"));
-                                Log.i("Successo","Ho settato la domanda");
 
                                 init();
                                 enableOnScrollDownAction();
@@ -137,7 +135,6 @@ public class A29_Risposte extends SuperActivity {
     }
 
     void init() {
-        Log.i("Successo","Quando entro in init?");
         scegliTopRisposta = isActivated() && (domanda.getRispostaTop() == null) && (domanda.getUtente().getId() == getUser().getId());
 
         //setting domanda

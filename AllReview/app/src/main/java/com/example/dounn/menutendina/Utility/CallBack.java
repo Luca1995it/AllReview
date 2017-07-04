@@ -6,5 +6,5 @@ package com.example.dounn.menutendina.Utility;
 
 public abstract class CallBack {
 
-    public abstract void in_the_end(Object o);
+    public abstract void inTheEnd(Object o);
 }

@@ -2,7 +2,6 @@ package com.example.dounn.menutendina;
 
 import android.app.Application;
 
-import com.example.dounn.menutendina.Database.Utente;
 import com.example.dounn.menutendina.Utility.Images;
 import com.example.dounn.menutendina.Utility.Utility;
 

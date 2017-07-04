@@ -8,7 +8,6 @@ import android.os.Vibrator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 
 import com.example.dounn.menutendina.Adapters.ElementoAdapter;
 import com.example.dounn.menutendina.Database.Elemento;
@@ -106,7 +105,6 @@ public class A22_OggettiSeguiti extends LoggedActivity {
                             for(int i = 0; i < result.length(); i++) {
                                 elementi.add(new Elemento(result.getJSONObject(i)));
                             }
-                            Log.e("Successo","Trovati: " + elementi.size());
                             adapter.update(elementi);
                         } else throw new JSONException("Parsing error " + a.toString());
                     } catch(JSONException e) {

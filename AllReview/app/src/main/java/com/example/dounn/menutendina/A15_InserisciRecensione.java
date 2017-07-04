@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -31,7 +30,7 @@ public class A15_InserisciRecensione extends SuperActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a15_layout);
-        navigationView.getMenu().getItem(pref.getInt("nav_inserisci_recensione",0)).setChecked(true);
+        navigationView.getMenu().getItem(pref.getInt("nav_inserisci_recensione", 0)).setChecked(true);
 
         /*
         SE PROVIENE DALLA RICERCA FATTA SU INSERISCI RICERCA ALLORA PRENDERE LA QUERY DI RICERCA
@@ -75,7 +74,6 @@ public class A15_InserisciRecensione extends SuperActivity {
                     //controllo lo stato della richiesta
                     try {
                         if(!a.getString("status").equals("ERROR")) {
-                            Log.i("Successo ", "Trovato elemento" + a.getJSONArray("result"));
                             for(int i = 0; i < a.getJSONArray("result").length(); i++) {
                                 //NUMERO ELEMENTI ANALIZZATO
 
@@ -86,10 +84,10 @@ public class A15_InserisciRecensione extends SuperActivity {
                             Intent i = new Intent(ctx, A16_CreaRecensione.class);
                             recyclerView.setAdapter(new ElementoAdapter(ctx, elementi, i));
                         } else {
-                            Log.e("Successo", "Errore:" + a.getString("status"));
+                            errorBar(getResources().getString(R.string.errore_server), 2000);
                         }
                     } catch(JSONException e) {
-                        Log.e("Successo", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                        e.printStackTrace();
                     }
                 }
 
@@ -99,7 +97,7 @@ public class A15_InserisciRecensione extends SuperActivity {
                 }
             }).execute(req);
         } catch(JSONException e) {
-            Log.e("Successo", "Errore:\n" + e);
+            e.printStackTrace();
         }
     }
 }

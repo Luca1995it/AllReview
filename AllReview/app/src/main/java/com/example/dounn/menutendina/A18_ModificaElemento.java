@@ -6,9 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.widget.ArrayAdapter;
@@ -176,7 +174,6 @@ public class A18_ModificaElemento extends SuperActivity {
         }
 
         startCaricamento(200, "Uploading changes");
-        Log.e("Successo", "Entering send changes");
 
         boolean updateCategoria = modificaCategoria.isChecked();
         boolean updateNome = modificaNomeElemento.isChecked();

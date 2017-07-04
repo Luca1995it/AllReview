@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ public class DomandeFilterAdapter extends RecyclerView.Adapter<DomandeFilterAdap
     Context ctx;
 
     public DomandeFilterAdapter(Context context, ArrayList<Domanda> domande) {
-        Log.e("DomandeAdapter", "Init with " + domande.size());
         this.ctx = context;
         this.mOriginalValues = domande;
         this.mDisplayedValues = domande;

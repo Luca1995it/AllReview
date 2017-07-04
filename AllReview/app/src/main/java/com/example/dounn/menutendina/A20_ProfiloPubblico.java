@@ -3,7 +3,6 @@ package com.example.dounn.menutendina;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -26,7 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class A20_ProfiloPubblico extends SuperActivity{
+public class A20_ProfiloPubblico extends SuperActivity {
 
     private Utente utenteRed;
     private int id_utente;
@@ -139,35 +138,36 @@ public class A20_ProfiloPubblico extends SuperActivity{
                 reqpref.put("id_utente", id_utente);
                 reqpref.put("token", getToken());
                 reqpref.put("path", "is_seguito");
+
+
+                new Request(new RequestCallback() {
+                    @Override
+                    public void inTheEnd(JSONObject a) {
+                        try {
+                            if(!a.getString("status").equals("ERROR")) {
+                                progressSegui.setVisibility(View.GONE);
+                                if(a.getString("result").equals("si")) {
+                                    //se è già preferito mostro bottone per rimuoverlo
+                                    seguiRemove.setVisibility(View.VISIBLE);
+                                } else {
+                                    //altrimenti mostro bottone per poterlo aggiungere
+                                    seguiAdd.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void noInternetConnection() {
+                        noInternetErrorBar();
+                    }
+                }).execute(reqpref);
             } catch(JSONException e) {
-                Log.e("Errore nella creazione json richiesta preferiti", e.toString());
+                e.printStackTrace();
                 errorBar(getResources().getString(R.string.Error), 2000);
             }
-
-            new Request(new RequestCallback() {
-                @Override
-                public void inTheEnd(JSONObject a) {
-                    try {
-                        if(!a.getString("status").equals("ERROR")) {
-                            progressSegui.setVisibility(View.GONE);
-                            if(a.getString("result").equals("si")) {
-                                //se è già preferito mostro bottone per rimuoverlo
-                                seguiRemove.setVisibility(View.VISIBLE);
-                            } else {
-                                //altrimenti mostro bottone per poterlo aggiungere
-                                seguiAdd.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    } catch(JSONException e) {
-                        Log.e("Errore nel post ricezione da richiesta preferiti", e.toString());
-                    }
-                }
-
-                @Override
-                public void noInternetConnection() {
-                    noInternetErrorBar();
-                }
-            }).execute(reqpref);
 
             //associo il listener al bottone per la rimozione
             seguiRemove.setOnClickListener(new View.OnClickListener() {
@@ -182,34 +182,35 @@ public class A20_ProfiloPubblico extends SuperActivity{
                         reqpref.put("id_utente", id_utente);
                         reqpref.put("token", getToken());
                         reqpref.put("path", "remove_seguito");
-                    } catch(JSONException e) {
-                        Log.e("Errore nella creazione json richiesta remove preferito", e.toString());
-                    }
-                    //richiesta rimossione dai preferiti
-                    new Request(new RequestCallback() {
-                        @Override
-                        public void inTheEnd(JSONObject a) {
-                            try {
-                                if(!a.getString("status").equals("ERROR")) {
-                                    successBar(getResources().getString(R.string.Remove_favorites), 3000);
-                                    setGone(seguiRemove, progressSegui);
-                                    setVisible(seguiAdd);
-                                } else {
-                                    setGone(progressSegui);
-                                    setVisible(seguiRemove);
-                                    errorBar(getResources().getString(R.string.Op_fine), 3000);
-                                }
-                            } catch(JSONException e) {
-                                Log.e("Errore nel post ricezione da richiesta preferiti", e.toString());
-                                errorBar(getResources().getString(R.string.Error), 2000);
-                            }
-                        }
 
-                        @Override
-                        public void noInternetConnection() {
-                            noInternetErrorBar();
-                        }
-                    }).execute(reqpref);
+                        //richiesta rimossione dai preferiti
+                        new Request(new RequestCallback() {
+                            @Override
+                            public void inTheEnd(JSONObject a) {
+                                try {
+                                    if(!a.getString("status").equals("ERROR")) {
+                                        successBar(getResources().getString(R.string.Remove_favorites), 3000);
+                                        setGone(seguiRemove, progressSegui);
+                                        setVisible(seguiAdd);
+                                    } else {
+                                        setGone(progressSegui);
+                                        setVisible(seguiRemove);
+                                        errorBar(getResources().getString(R.string.Op_fine), 3000);
+                                    }
+                                } catch(JSONException e) {
+                                    e.printStackTrace();
+                                    errorBar(getResources().getString(R.string.Error), 2000);
+                                }
+                            }
+
+                            @Override
+                            public void noInternetConnection() {
+                                noInternetErrorBar();
+                            }
+                        }).execute(reqpref);
+                    } catch(JSONException e) {
+
+                    }
                 }
             });
 
@@ -226,35 +227,36 @@ public class A20_ProfiloPubblico extends SuperActivity{
                         reqpref.put("id_utente", id_utente);
                         reqpref.put("token", getToken());
                         reqpref.put("path", "add_seguito");
+
+                        //richiesta aggiunta ai preferiti
+                        new Request(new RequestCallback() {
+                            @Override
+                            public void inTheEnd(JSONObject a) {
+                                try {
+                                    if(!a.getString("status").equals("ERROR")) {
+                                        successBar(getResources().getString(R.string.Add_favorites), 3000);
+                                        setGone(seguiAdd, progressSegui);
+                                        setVisible(seguiRemove);
+                                    } else {
+                                        setGone(progressSegui);
+                                        setVisible(seguiAdd);
+                                        errorBar(getResources().getString(R.string.Op_fine), 3000);
+                                    }
+                                } catch(JSONException e) {
+                                    e.printStackTrace();
+                                    errorBar(getResources().getString(R.string.Error), 2000);
+                                }
+                            }
+
+                            @Override
+                            public void noInternetConnection() {
+                                noInternetErrorBar();
+                            }
+                        }).execute(reqpref);
                     } catch(JSONException e) {
                         errorBar(getResources().getString(R.string.Error), 2000);
-                        Log.e("Errore nella creazione json richiesta remove preferito", e.toString());
-                    }
-                    //richiesta aggiunta ai preferiti
-                    new Request(new RequestCallback() {
-                        @Override
-                        public void inTheEnd(JSONObject a) {
-                            try {
-                                if(!a.getString("status").equals("ERROR")) {
-                                    successBar(getResources().getString(R.string.Add_favorites), 3000);
-                                    setGone(seguiAdd, progressSegui);
-                                    setVisible(seguiRemove);
-                                } else {
-                                    setGone(progressSegui);
-                                    setVisible(seguiAdd);
-                                    errorBar(getResources().getString(R.string.Op_fine), 3000);
-                                }
-                            } catch(JSONException e) {
-                                Log.e("Errore nel post ricezione da richiesta preferiti", e.toString());
-                                errorBar(getResources().getString(R.string.Error), 2000);
-                            }
-                        }
 
-                        @Override
-                        public void noInternetConnection() {
-                            noInternetErrorBar();
-                        }
-                    }).execute(reqpref);
+                    }
                 }
             });
         }
@@ -364,7 +366,7 @@ public class A20_ProfiloPubblico extends SuperActivity{
     void updateUser(final int id_utente) {
         synchronized(lockUpdateUser) {
             startCaricamento(100, getResources().getString(R.string.Get_user));
-            Log.e("Successo", "Starting user init");
+
             try {
                 JSONObject req = new JSONObject();
                 req.put("id_utente", id_utente);
@@ -376,26 +378,24 @@ public class A20_ProfiloPubblico extends SuperActivity{
                         try {
                             if(a.getString("status").equals("OK")) {
                                 // INIZIALIZZAZIONE DATI SCARICATI
-                                Log.e("Successo", "User req ok");
+
                                 utenteRed = new Utente(a.getJSONObject("result"));
 
                                 showUser();
                                 stopCaricamento(200);
                             } else {
-                                Log.e("SERVER_ERROR", "RESPONSE:" + a.toString());
                                 noInternetErrorBar();
                                 stopCaricamento(200);
                             }
 
                         } catch(Exception e) {
-                            Log.e("Successo", "Male" + e.getMessage());
+                            e.printStackTrace();
                             stopCaricamento(200);
                         }
                     }
 
                     @Override
                     public void noInternetConnection() {
-                        Log.e("Successo", "Male stopping");
                         noInternetErrorBar();
                         stopCaricamento(200);
 

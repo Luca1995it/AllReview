@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.example.dounn.menutendina.A14_Notifiche;
 import com.example.dounn.menutendina.Database.Notifica;
@@ -32,9 +31,6 @@ public class NotificationsListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String s, Bundle bundle) {
         super.onMessageReceived(s, bundle);
-        Log.e("Service", "message received: " + s);
-        Log.e("Service", "Content: " + bundle.toString());
-
 
         try {
             final Context ctx = this;
@@ -48,8 +44,6 @@ public class NotificationsListenerService extends GcmListenerService {
             final int id_utente = Integer.valueOf(bundle.getString("id_utente"));
 
             if(user.getId() != id_utente) return;
-
-            Log.e("Service", "Response not_id: " + id_not);
 
             try {
                 JSONObject req = new JSONObject();

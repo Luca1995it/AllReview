@@ -9,7 +9,6 @@ import android.database.MatrixCursor;
 import android.graphics.Color;
 import android.provider.BaseColumns;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +69,6 @@ public class Search {
         for (int i = 0; i < names.getNames().size(); i++) {
             if (names.getNames().get(i).toLowerCase().contains(query.toLowerCase())) {
                 c.addRow(new Object[]{i, names.getNames().get(i)});
-                Log.i("Stampa","elemento: "+names.getNames().get(i));
             }
         }
         if (c.getCount() == 0) {
@@ -131,7 +129,6 @@ public class Search {
                     context.startActivity(intent);
                 }
                 else{
-                    Log.i("Successo","Sono in inserisci recensione");
                     intent = new Intent(context, A15_InserisciRecensione.class);
                     intent.putExtra("query", query);
                     //LA ACTIVITY CHIAMA NON FA NE L'ANIMAZIONE NE VIENE TENUTA NELLA STORIA

@@ -1,6 +1,5 @@
 package com.example.dounn.menutendina;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import com.example.dounn.menutendina.Database.Store;

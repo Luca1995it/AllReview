@@ -11,7 +11,6 @@ public class CircleAnimation extends Animation {
     private boolean direction;
     private CircleView circle;
 
-
     public CircleAnimation(CircleView circle, boolean direction) {
         this.circle = circle;
         this.direction = direction;

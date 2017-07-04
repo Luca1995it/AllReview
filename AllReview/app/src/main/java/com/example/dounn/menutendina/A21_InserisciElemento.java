@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -25,8 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Hashtable;
 
 public class A21_InserisciElemento extends SuperActivity {
     //DICHIARO TUTTI GLI ELEMENTI CHE DEVO USARE, REQUEST_CODE è PER CHIEDERE L'UTILIZZO DELLA FOTOCAMERA
@@ -150,7 +147,7 @@ public class A21_InserisciElemento extends SuperActivity {
                                 dialog.cancel();
                             }
                         });
-                builder.setNegativeButton( getResources().getString(R.string.No),
+                builder.setNegativeButton(getResources().getString(R.string.No),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -242,17 +239,14 @@ public class A21_InserisciElemento extends SuperActivity {
                 req.put("id_categoria", dropdown.getSelectedItemPosition());
                 req.put("path", "add_elemento");
                 Utility.addFotoJSON(req, bitmaps);
-                Log.i("Successo", "" + req);
                 //chiamo la richiesta asincrona al database per il controllo dei campi
                 new Request(new RequestCallback() {
                     @Override
                     public void inTheEnd(JSONObject a) {
-                        Log.i("Successo:", a.toString());
                         //controllo lo stato della richiesta
                         try {
                             if(!a.getString("status").equals("ERROR")) {
 
-                                Log.i("Successo", " Oggetto json:" + a.toString());
                                 Elemento tmp = new Elemento(a.getJSONObject("result"));
                                 Intent i = new Intent(ctx, A27_PaginaElemento.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -261,12 +255,10 @@ public class A21_InserisciElemento extends SuperActivity {
                                 startActivity(i);
                                 finish();
                             } else {
-                                Log.e("Successo:", "" + a.getString("status"));
-                                Log.e("Successo", "Qualcosa è andato storto nell'inserimento elemento");
+                                errorBar(getResources().getString(R.string.errore_server), 2000);
                             }
                         } catch(JSONException e) {
-
-                            Log.e("Successo", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                            e.printStackTrace();
                         }
                     }
 
@@ -276,7 +268,7 @@ public class A21_InserisciElemento extends SuperActivity {
                     }
                 }).execute(req);
             } catch(JSONException e) {
-                Log.e("Successo login", "Errore:\n" + e);
+                e.printStackTrace();
             }
         }
 

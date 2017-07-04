@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ public class ScrollImagesAdapter extends PagerAdapter {
 
     //ricevo le stringhe contenenti le foto da visualizzare
     public ScrollImagesAdapter(Context context, ArrayList<Foto> fotos) {
-        Log.e("FOTO-ADAPTER", "" + fotos);
         this.context = context;
         this.fotos = fotos;
     }

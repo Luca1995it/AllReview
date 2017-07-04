@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -100,7 +99,7 @@ public class A16_CreaRecensione extends SuperActivity {
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         dots = new ImageView[conteggio_foto];
-        for (int i = 0; i < conteggio_foto; i++) {
+        for(int i = 0; i < conteggio_foto; i++) {
             dots[i] = new ImageView(ctx);
             dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.nonactive_dot));
             params.setMargins(12, 0, 12, 0);
@@ -118,7 +117,7 @@ public class A16_CreaRecensione extends SuperActivity {
             @Override
             public void onPageSelected(int position) {
                 //metto tutti i punti vuoti
-                for (int i = 0; i < conteggio_foto; i++) {
+                for(int i = 0; i < conteggio_foto; i++) {
                     dots[i].setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.nonactive_dot));
                 }
                 //metto quello giusto selezionato
@@ -147,7 +146,7 @@ public class A16_CreaRecensione extends SuperActivity {
 
                 //TODO cambiare lunghezza descrizione, per comodità messa bassa, poi va settata a 30
                 //se la lunghezza di titolo e descrizione vanno bene invio tutto al server
-                if (editTitolo.getText().toString().length() >= 4 && descrizione.getText().toString().length() >= 10) {
+                if(editTitolo.getText().toString().length() >= 4 && descrizione.getText().toString().length() >= 10) {
                     Utility.hideSoftKeyboard(A16_CreaRecensione.this);
                     startCaricamentoTimeout(0, 200000, getResources().getString(R.string.caricamento_recensione));
                     JSONObject req = new JSONObject();
@@ -161,8 +160,8 @@ public class A16_CreaRecensione extends SuperActivity {
                             @Override
                             public void inTheEnd(JSONObject a) {
                                 try {
-                                    if (!a.getString("status").equals("ERROR")) {
-                                        if (a.getString("result").equals("si")) {
+                                    if(!a.getString("status").equals("ERROR")) {
+                                        if(a.getString("result").equals("si")) {
                                             //la recensione è già stata caricata dall'utente
                                             stopCaricamento(0);
                                             Utility.hideSoftKeyboard(A16_CreaRecensione.this);
@@ -175,7 +174,7 @@ public class A16_CreaRecensione extends SuperActivity {
                                                 req.put("id_elemento", elemento.getId());
                                                 req.put("token", getToken());
                                                 //controllo se è stata inserita o no una immagine
-                                                if (resizedBitmap != null)
+                                                if(resizedBitmap != null)
                                                     req.put("foto", toEncodedString(resizedBitmap));
                                                 else
                                                     req.put("foto", "no_foto");
@@ -188,7 +187,7 @@ public class A16_CreaRecensione extends SuperActivity {
                                                     @Override
                                                     public void inTheEnd(JSONObject a) {
                                                         try {
-                                                            if (!a.getString("status").equals("ERROR")) {
+                                                            if(!a.getString("status").equals("ERROR")) {
                                                                 //ricevo la recensione dal server per pssarla alla prossima activity e salvare la foto
                                                                 Recensione recensione = new Recensione(a.getJSONObject("result"));
                                                                 Store.add("recensione", recensione);
@@ -200,9 +199,9 @@ public class A16_CreaRecensione extends SuperActivity {
                                                                 startActivity(i);
                                                                 finish();
                                                             }
-                                                        } catch (JSONException e) {
+                                                        } catch(JSONException e) {
                                                             errorBar(getResources().getString(R.string.Server_error), 2000);
-                                                            Log.e("Errore", e.toString());
+                                                            e.printStackTrace();
                                                         }
                                                     }
 
@@ -211,16 +210,16 @@ public class A16_CreaRecensione extends SuperActivity {
                                                         noInternetErrorBar();
                                                     }
                                                 }).execute(req);
-                                            } catch (JSONException e) {
-                                                Log.e("Errore nella richiesta al server crea recensione", e.toString());
+                                            } catch(JSONException e) {
+                                                e.printStackTrace();
                                             }
 
                                         }
 
                                     }
-                                } catch (JSONException e) {
+                                } catch(JSONException e) {
                                     errorBar(getResources().getString(R.string.errore_server), 3000);
-                                    Log.e("Errore risposta server just_recensito", e.toString());
+                                    e.printStackTrace();
                                 }
                             }
 
@@ -229,17 +228,17 @@ public class A16_CreaRecensione extends SuperActivity {
                                 noInternetErrorBar();
                             }
                         }).execute(req);
-                    } catch (JSONException e) {
-                        Log.e("Errore nella richiesta al server justrecensito", e.toString());
+                    } catch(JSONException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     //se le lunghezze non vanno bene mostro gli errori e setto i listener per la loro scomparsa
-                    if (editTitolo.getText().toString().length() < 4) {
+                    if(editTitolo.getText().toString().length() < 4) {
                         erroreTitolo = (TextView) findViewById(R.id.errore_titolo);
                         erroreTitolo.setVisibility(View.VISIBLE);
                         cancellaMessaggioErroreTitoloNonValido();
                     }
-                    if (descrizione.getText().toString().length() < 30) {
+                    if(descrizione.getText().toString().length() < 30) {
                         erroreDescrizione = (TextView) findViewById(R.id.errore_descrizione);
                         erroreDescrizione.setVisibility(View.VISIBLE);
                         cancellaMessaggioErroreDescrizioneNonValida();
@@ -264,12 +263,12 @@ public class A16_CreaRecensione extends SuperActivity {
                         getResources().getString(R.string.Yes),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                resizedBitmap=null;
+                                resizedBitmap = null;
                                 immagineAllega.setImageBitmap(null);
                                 dialog.cancel();
                             }
                         });
-                builder.setNegativeButton( getResources().getString(R.string.No),
+                builder.setNegativeButton(getResources().getString(R.string.No),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -295,7 +294,7 @@ public class A16_CreaRecensione extends SuperActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (viewPager.getCurrentItem() == conteggio_foto - 1)
+                    if(viewPager.getCurrentItem() == conteggio_foto - 1)
                         viewPager.setCurrentItem(0);
                     else
                         viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);

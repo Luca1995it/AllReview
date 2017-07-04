@@ -3,7 +3,6 @@ package com.example.dounn.menutendina.Service;
 import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.dounn.menutendina.R;
 import com.google.android.gms.gcm.GcmPubSub;
@@ -25,7 +24,6 @@ public class RegistrationService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.e("Service","Entered");
 
         InstanceID myID = InstanceID.getInstance(this);
         String registrationToken = null;
@@ -35,13 +33,10 @@ public class RegistrationService extends IntentService {
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE,
                     null
             );
-            Log.e("Service","Token " + registrationToken);
             GcmPubSub subscription = GcmPubSub.getInstance(this);
             subscription.subscribe(registrationToken, "/topics/my_little_topic", null);
         } catch(IOException e) {
-            Log.e("Service","Maleeee" + e.getMessage());
             e.printStackTrace();
         }
-        Log.d("Registration Token", registrationToken);
     }
 }

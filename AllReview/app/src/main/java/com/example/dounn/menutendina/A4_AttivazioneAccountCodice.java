@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +55,6 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
                             public void inTheEnd(JSONObject a) {
                                 try {
                                     if(a != null) {
-                                        Log.d("Risultati conferma codice:", a.toString());
                                         if(!a.getString("status").equals("ERROR")) {
                                             //inserisco il token nella sessione
                                             attivaUser();
@@ -72,14 +70,12 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
                                             cancellaMessaggioErroreCodice();
                                         }
                                     } else {
-                                        Log.e("Risultati accesso errore", "Errore nella connessione al server nella Conferma codice");
+                                        errorBar(getResources().getString(R.string.errore_server), 2000);
                                     }
                                 } catch(JSONException e) {
-                                    Log.e("errore post invio dati server attiva account", "\nErrore:\n" + e.toString());
+                                    e.printStackTrace();
                                 }
-
                             }
-
 
                             @Override
                             public void noInternetConnection() {
@@ -108,37 +104,38 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
                     //inserisco nella richiesta il token in sessione
                     req.put("token", getToken());
                     req.put("path", "reinvio_email");
-                } catch(JSONException e) {
-                    Log.e("errore nella creazione rerquest reinvio email della email:/n", e.toString());
-                }
 
-                new Request(new RequestCallback() {
-                    @Override
-                    public void inTheEnd(JSONObject a) {
-                        try {
-                            if(a != null) {
-                                //Log.d("Risultati reinviao email:", a.toString());
-                                //se non ci sono stati errori mostro un toast
-                                if(!a.getString("status").equals("ERROR")) {
-                                    successBar(getResources().getString(R.string.Success_email), 3000);
+
+                    new Request(new RequestCallback() {
+                        @Override
+                        public void inTheEnd(JSONObject a) {
+                            try {
+                                if(a != null) {
+                                    //Log.d("Risultati reinviao email:", a.toString());
+                                    //se non ci sono stati errori mostro un toast
+                                    if(!a.getString("status").equals("ERROR")) {
+                                        successBar(getResources().getString(R.string.Success_email), 3000);
+                                    } else {
+                                        //altrimenti faccio comparire messaggio di errore
+                                        erroreReinviaEmail = (TextView) findViewById(R.id.errore_reinvio_email);
+                                        erroreReinviaEmail.setVisibility(View.VISIBLE);
+                                    }
                                 } else {
-                                    //altrimenti faccio comparire messaggio di errore
-                                    erroreReinviaEmail = (TextView) findViewById(R.id.errore_reinvio_email);
-                                    erroreReinviaEmail.setVisibility(View.VISIBLE);
+                                    errorBar(getResources().getString(R.string.errore_server),2000);
                                 }
-                            } else {
-                                Log.e("Risultati accesso errore", "Errore nella connessione al server nella Registrazione");
+                            } catch(JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch(JSONException e) {
-                            Log.e("errore nella risposta per il reinvio della email:/n", e.toString());
                         }
-                    }
 
-                    @Override
-                    public void noInternetConnection() {
-                        noInternetErrorBar();
-                    }
-                }).execute(req);
+                        @Override
+                        public void noInternetConnection() {
+                            noInternetErrorBar();
+                        }
+                    }).execute(req);
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

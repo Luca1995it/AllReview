@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.widget.Button;
@@ -38,7 +37,6 @@ public class A13_ModificaProfilo extends LoggedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a13_layout);
-
 
 
         sendChanges = (Button) findViewById(R.id.send_changes);
@@ -165,7 +163,6 @@ public class A13_ModificaProfilo extends LoggedActivity {
     void sendChanges() {
 
         startCaricamento(200, getResources().getString(R.string.Up_changes));
-        Log.e("Successo", "Entering send changes");
 
         boolean updateUsername = modificaUsername.isChecked();
         final boolean updateEmail = modificaEmail.isChecked();
@@ -222,12 +219,11 @@ public class A13_ModificaProfilo extends LoggedActivity {
                             stopCaricamento(200);
                             successBar(getResources().getString(R.string.Update), 3000);
                             Intent i;
-                            if(updateEmail || updatePassword){
+                            if(updateEmail || updatePassword) {
                                 removeUser();
-                                i = new Intent(ctx,A1_LoginIniziale.class);
-                            }
-                            else i = new Intent(ctx,A7_ProfiloPrivato.class);
-                            i.setFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                i = new Intent(ctx, A1_LoginIniziale.class);
+                            } else i = new Intent(ctx, A7_ProfiloPrivato.class);
+                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                         } else {
                             errorBar(getResources().getString(R.string.Error_req), 3000);

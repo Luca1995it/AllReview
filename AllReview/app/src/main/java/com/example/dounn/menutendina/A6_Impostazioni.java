@@ -88,7 +88,7 @@ public class A6_Impostazioni extends LoggedActivity {
         startCaricamento(0, getResources().getString(R.string.Updating_data));
         updateUser(new CallBack() {
             @Override
-            public void in_the_end(Object o) {
+            public void inTheEnd(Object o) {
                 stopCaricamento(100);
                 update();
             }

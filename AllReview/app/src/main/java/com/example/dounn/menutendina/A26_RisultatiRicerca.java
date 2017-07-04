@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -28,7 +27,6 @@ public class A26_RisultatiRicerca extends SuperActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a26_layout);
-        Log.e("Successo", "Entro nella ricerca");
         Intent i = getIntent();
         Bundle extras = i.getExtras();
         String tmp = extras.getString("query");
@@ -56,15 +54,15 @@ public class A26_RisultatiRicerca extends SuperActivity {
                     //controllo lo stato della richiesta
                     try {
                         if(!a.getString("status").equals("ERROR")) {
-                            Log.i("Successo ", "Trovato elemento" + a.getJSONArray("result"));
+
                             int lenght = a.getJSONArray("result").length();
-                            Log.i("Successo", "" + lenght);
+
                             for(int i = 0; i < lenght; i++) {
                                 //NUMERO ELEMENTI ANALIZZATO
                                 Elemento elemento = new Elemento(a.getJSONArray("result").getJSONObject(i));
                                 elementos.add(elemento);
                             }
-                            Log.e("Successo", "Aggiunti " + elementos.size());
+
                             Intent i = new Intent(ctx, A27_PaginaElemento.class);
                             ElementoAdapter adapter = new ElementoAdapter(ctx, elementos, i);
                             recyclerView.setAdapter(adapter);
@@ -86,10 +84,10 @@ public class A26_RisultatiRicerca extends SuperActivity {
 
                             stopCaricamento(200);
                         } else {
-                            Log.e("Successo", "Errore:" + a.getString("status"));
+                            errorBar(getResources().getString(R.string.errore_server),2000);
                         }
                     } catch(JSONException e) {
-                        Log.e("Successo", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                        e.printStackTrace();
                     }
                 }
 
@@ -99,7 +97,7 @@ public class A26_RisultatiRicerca extends SuperActivity {
                 }
             }).execute(req);
         } catch(JSONException e) {
-            Log.e("Successo", "Errore:\n" + e);
+            e.printStackTrace();
         }
     }
 }

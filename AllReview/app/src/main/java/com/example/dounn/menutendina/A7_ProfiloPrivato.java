@@ -177,7 +177,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
         startCaricamento(200, getResources().getString(R.string.Up_user));
         updateUser(new CallBack() {
             @Override
-            public void in_the_end(Object o) {
+            public void inTheEnd(Object o) {
                 showUser();
                 stopCaricamento(200);
             }
@@ -295,7 +295,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
                             startCaricamento(0, getResources().getString(R.string.Up_user));
                             updateUser(new CallBack() {
                                 @Override
-                                public void in_the_end(Object o) {
+                                public void inTheEnd(Object o) {
                                     stopCaricamento(100);
                                     showUser();
                                     successBar(getResources().getString(R.string.Loading_image), 6000);

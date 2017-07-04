@@ -13,7 +13,6 @@ import com.example.dounn.menutendina.Utility.GenericRequest;
 import com.example.dounn.menutendina.Utility.Request;
 import com.example.dounn.menutendina.Utility.RequestCallback;
 import com.example.dounn.menutendina.Utility.Utility;
-import com.google.gson.annotations.Until;
 
 import org.json.JSONArray;
 import org.json.JSONException;

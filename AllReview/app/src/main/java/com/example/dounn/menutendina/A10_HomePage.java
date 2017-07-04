@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -157,17 +156,14 @@ public class A10_HomePage extends SuperActivity {
     //CREO LA LISTA SUGGERITI PREFERITI E VISTI DI RECENTE
     public void createLista() {
         startCaricamento(150, getResources().getString(R.string.Homepage_Loading));
-        Log.i("Successo", "" + nomi.size());
         count = -1;
         for(int i = 0; i < nomi.size(); i++) {
             JSONObject req = new JSONObject();
             try {
                 if(isActivated()) {
                     req.put("token", getToken());
-                    Log.i("Successo", "Male");
                 }
                 req.put("path", nomi.get(i));
-                Log.i("Successo", "Richiesta: " + nomi.get(i));
                 final String names = nomi.get(i);
                 new Request(new RequestCallback() {
                     @Override
@@ -175,7 +171,7 @@ public class A10_HomePage extends SuperActivity {
                         //controllo lo stato della richiesta
                         try {
                             if(!a.getString("status").equals("ERROR")) {
-                                Log.i("Successo", "Risultato: " + a.getJSONArray("result"));
+
                                 if(a.getJSONArray("result").length() > 0) {
                                     count++;
                                     stopCaricamento(200);
@@ -184,9 +180,9 @@ public class A10_HomePage extends SuperActivity {
                                         for(int j = 0; j < a.getJSONArray("result").length(); j++) {
                                             //NUMERO ELEMENTI ANALIZZATO
                                             if(elementi.size() < NUMERO_ELEMENTI) {
-                                                Log.e("Successo", "Count: " + count);
+
                                                 Elemento elemento = new Elemento(a.getJSONArray("result").getJSONObject(j));
-                                                Log.i("Successo", "elemento: " + elemento.getNome() + "-- richiesta corrente: " + names + count);
+
                                                 arrayText.get(count).setText(tabellaNomi.get(names));
                                                 arrayText.get(count).setVisibility(View.VISIBLE);
                                                 elementi.add(elemento);
@@ -194,7 +190,7 @@ public class A10_HomePage extends SuperActivity {
                                         }
                                         Intent intent = new Intent(ctx, A27_PaginaElemento.class);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        Log.i("Successo", "elementi" + elementi.size());
+
                                         arrayListeLayout.get(count).setAdapter(new SuggeritiPreferitiRecentiAdapter(ctx, elementi, intent));
 
                                     }
@@ -202,10 +198,10 @@ public class A10_HomePage extends SuperActivity {
 
                             } else {
                                 noInternetErrorBar();
-                                Log.e("Successo", "Errore:" + a.getString("status"));
+
                             }
                         } catch(JSONException e) {
-                            Log.e("Successo", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                            e.printStackTrace();
                         }
                     }
 
@@ -215,7 +211,7 @@ public class A10_HomePage extends SuperActivity {
                     }
                 }).execute(req);
             } catch(JSONException e) {
-                Log.e("Successo", "Errore:\n" + e);
+                e.printStackTrace();
             }
         }
 

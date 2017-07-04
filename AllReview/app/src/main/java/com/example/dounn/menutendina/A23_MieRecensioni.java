@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.example.dounn.menutendina.Adapters.MieRecensioniAdapter;
 import com.example.dounn.menutendina.Database.Recensione;
@@ -25,7 +24,7 @@ public class A23_MieRecensioni extends LoggedActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a23_layout);
-        navigationView.getMenu().getItem(pref.getInt("nav_mie_recensioni",0)).setChecked(true);
+        navigationView.getMenu().getItem(pref.getInt("nav_mie_recensioni", 0)).setChecked(true);
 
         recyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -65,11 +64,11 @@ public class A23_MieRecensioni extends LoggedActivity {
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             recyclerview.setAdapter(new MieRecensioniAdapter(ctx, recensiones, intent));
                         } else {
-                            Log.e("Successo", "Errore qui:---" + a.getString("status"));
+                            errorBar(getResources().getString(R.string.errore_server), 2000);
                         }
 
                     } catch(JSONException e) {
-                        Log.e("Successo", " Oggetto json:---" + a.toString() + "\nErrore:\n" + e.toString());
+                        e.printStackTrace();
                     }
                     stopCaricamento(200);
                 }
@@ -82,7 +81,7 @@ public class A23_MieRecensioni extends LoggedActivity {
             }).execute(req);
         } catch(JSONException e) {
             stopCaricamento(200);
-            Log.e("Successo", "Errore:\n" + e);
+            e.printStackTrace();
         }
     }
 

@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +36,6 @@ public class A28_Domande extends SuperActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("Successo", "Sono entrato prima");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a28_layout);
 

@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -174,8 +173,6 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
         } else testoVotazioneElemento.setText(String.format("%.1f", (elemento.getRating())));
         descrizione.setText(elemento.getDescr());
 
-        Log.d("Risultati a27", String.valueOf(elemento.getRating()));
-
         //Richiesta per le recensioni dell'elemento *
         JSONObject req = new JSONObject();
 
@@ -196,7 +193,6 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
                 public void inTheEnd(JSONObject a) {
                     try {
                         if(!a.getString("status").equals("ERROR")) {
-                            Log.d("Risultati recensioni", a.getString("result"));
 
                             JSONArray result = a.getJSONArray("result");
 
@@ -217,7 +213,7 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
                             }
                         }
                     } catch(JSONException e) {
-                        Log.e("Risultato query recensioni elemento errore :", e.toString());
+                        e.printStackTrace();
                         stopCaricamento(200);
                     }
                 }
@@ -229,7 +225,7 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
             }).execute(req);
 
         } catch(JSONException e) {
-            Log.e("Risultato creazione json per richiesta recensioni errore :", e.toString());
+            e.printStackTrace();
         }
 
         viewPager.setAdapter(new ScrollImagesAdapter(ctx, elemento.getFotos()));
@@ -309,35 +305,38 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
                 reqpref.put("id_elemento", elemento.getId());
                 reqpref.put("token", getToken());
                 reqpref.put("path", "is_preferito");
+
+                new Request(new RequestCallback() {
+                    @Override
+                    public void inTheEnd(JSONObject a) {
+                        try {
+                            if(!a.getString("status").equals("ERROR")) {
+                                if(a.getString("result").equals("si")) {
+                                    caricamentoPreferiti.setVisibility(View.GONE);
+                                    //se è già preferito mostro bottone per rimuoverlo
+                                    bottoneRimuoviPreferiti.setVisibility(View.VISIBLE);
+                                } else {
+                                    caricamentoPreferiti.setVisibility(View.GONE);
+                                    //altrimenti mostro bottone per poterlo aggiungere
+                                    bottonePreferiti.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                errorBar(getResources().getString(R.string.errore_server), 2000);
+                            }
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void noInternetConnection() {
+                        noInternetErrorBar();
+                    }
+                }).execute(reqpref);
             } catch(JSONException e) {
-                Log.e("Errore nella creazione json richiesta preferiti", e.toString());
+                e.printStackTrace();
             }
 
-            new Request(new RequestCallback() {
-                @Override
-                public void inTheEnd(JSONObject a) {
-                    try {
-                        if(!a.getString("status").equals("ERROR")) {
-                            if(a.getString("result").equals("si")) {
-                                caricamentoPreferiti.setVisibility(View.GONE);
-                                //se è già preferito mostro bottone per rimuoverlo
-                                bottoneRimuoviPreferiti.setVisibility(View.VISIBLE);
-                            } else {
-                                caricamentoPreferiti.setVisibility(View.GONE);
-                                //altrimenti mostro bottone per poterlo aggiungere
-                                bottonePreferiti.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    } catch(JSONException e) {
-                        Log.e("Errore nel post ricezione da richiesta preferiti", e.toString());
-                    }
-                }
-
-                @Override
-                public void noInternetConnection() {
-                    noInternetErrorBar();
-                }
-            }).execute(reqpref);
 
             //associo il listener al bottone per la rimozione
             bottoneRimuoviPreferiti.setOnClickListener(new View.OnClickListener() {
@@ -352,33 +351,34 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
                         reqpref.put("id_elemento", elemento.getId());
                         reqpref.put("token", getToken());
                         reqpref.put("path", "remove_preferito");
-                    } catch(JSONException e) {
-                        Log.e("Errore nella creazione json richiesta remove preferito", e.toString());
-                    }
-                    //richiesta rimossione dai preferiti
-                    new Request(new RequestCallback() {
-                        @Override
-                        public void inTheEnd(JSONObject a) {
-                            try {
-                                if(!a.getString("status").equals("ERROR")) {
-                                    successBar(getResources().getString(R.string.Remove_favorites), 3000);
-                                    setGone(bottoneRimuoviPreferiti, caricamentoPreferiti);
-                                    setVisible(bottonePreferiti);
-                                } else {
-                                    setGone(caricamentoPreferiti);
-                                    setVisible(bottoneRimuoviPreferiti);
-                                    errorBar(getResources().getString(R.string.Op_fine), 3000);
+
+                        //richiesta rimossione dai preferiti
+                        new Request(new RequestCallback() {
+                            @Override
+                            public void inTheEnd(JSONObject a) {
+                                try {
+                                    if(!a.getString("status").equals("ERROR")) {
+                                        successBar(getResources().getString(R.string.Remove_favorites), 3000);
+                                        setGone(bottoneRimuoviPreferiti, caricamentoPreferiti);
+                                        setVisible(bottonePreferiti);
+                                    } else {
+                                        setGone(caricamentoPreferiti);
+                                        setVisible(bottoneRimuoviPreferiti);
+                                        errorBar(getResources().getString(R.string.Op_fine), 3000);
+                                    }
+                                } catch(JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch(JSONException e) {
-                                Log.e("Errore nel post ricezione da richiesta preferiti", e.toString());
                             }
-                        }
 
-                        @Override
-                        public void noInternetConnection() {
-
-                        }
-                    }).execute(reqpref);
+                            @Override
+                            public void noInternetConnection() {
+                                noInternetErrorBar();
+                            }
+                        }).execute(reqpref);
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -395,33 +395,34 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
                         reqpref.put("id_elemento", elemento.getId());
                         reqpref.put("token", getToken());
                         reqpref.put("path", "add_preferito");
-                    } catch(JSONException e) {
-                        Log.e("Errore nella creazione json richiesta remove preferito", e.toString());
-                    }
-                    //richiesta aggiunta ai preferiti
-                    new Request(new RequestCallback() {
-                        @Override
-                        public void inTheEnd(JSONObject a) {
-                            try {
-                                if(!a.getString("status").equals("ERROR")) {
-                                    successBar(getResources().getString(R.string.Add_favorites), 3000);
-                                    setGone(bottonePreferiti, caricamentoPreferiti);
-                                    setVisible(bottoneRimuoviPreferiti);
-                                } else {
-                                    setGone(caricamentoPreferiti);
-                                    setVisible(bottonePreferiti);
-                                    errorBar(getResources().getString(R.string.Op_fine), 3000);
+
+                        //richiesta aggiunta ai preferiti
+                        new Request(new RequestCallback() {
+                            @Override
+                            public void inTheEnd(JSONObject a) {
+                                try {
+                                    if(!a.getString("status").equals("ERROR")) {
+                                        successBar(getResources().getString(R.string.Add_favorites), 3000);
+                                        setGone(bottonePreferiti, caricamentoPreferiti);
+                                        setVisible(bottoneRimuoviPreferiti);
+                                    } else {
+                                        setGone(caricamentoPreferiti);
+                                        setVisible(bottonePreferiti);
+                                        errorBar(getResources().getString(R.string.Op_fine), 3000);
+                                    }
+                                } catch(JSONException e) {
+                                    e.printStackTrace();
                                 }
-                            } catch(JSONException e) {
-                                Log.e("Errore nel post ricezione da richiesta preferiti", e.toString());
                             }
-                        }
 
-                        @Override
-                        public void noInternetConnection() {
+                            @Override
+                            public void noInternetConnection() {
 
-                        }
-                    }).execute(reqpref);
+                            }
+                        }).execute(reqpref);
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -467,28 +468,29 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
             req.put("token", getToken());
             req.put("motivazione", inputText);
             req.put("path", "segnala_elemento");
-        } catch(JSONException e) {
-            Log.e("Errore nella creazione json richiesta segnalazione", e.toString());
-        }
-        new Request(new RequestCallback() {
-            @Override
-            public void inTheEnd(JSONObject a) {
-                try {
-                    if(!a.getString("status").equals("ERROR")) {
-                        successBar(getResources().getString(R.string.Report_succeed), 3000);
-                    } else {
-                        errorBar(getResources().getString(R.string.Report_error), 3000);
-                    }
-                } catch(JSONException e) {
-                    Log.e("Errore nel post ricezione da richiesta segnalazione elemento", e.toString());
-                }
-            }
 
-            @Override
-            public void noInternetConnection() {
-                errorBar(getResources().getString(R.string.Connection_error), 2000);
-            }
-        }).execute(req);
+            new Request(new RequestCallback() {
+                @Override
+                public void inTheEnd(JSONObject a) {
+                    try {
+                        if(!a.getString("status").equals("ERROR")) {
+                            successBar(getResources().getString(R.string.Report_succeed), 3000);
+                        } else {
+                            errorBar(getResources().getString(R.string.Report_error), 3000);
+                        }
+                    } catch(JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void noInternetConnection() {
+                    noInternetErrorBar();
+                }
+            }).execute(req);
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

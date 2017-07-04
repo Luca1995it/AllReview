@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -77,13 +76,13 @@ public class Images {
 
     public synchronized static boolean containsImage(String name) {
         if(name == null) return false;
-        Log.e("Foto", "Chiedo per foto cachata: " + name);
+
         SQLiteDatabase database = Images.database.getWritableDatabase();
         Cursor cursor = database.query(ImagesDataBase.TABLE_NAME, new String[]{ImagesDataBase.COLUMN_NAME}, ImagesDataBase.COLUMN_NAME + " = ?", new String[]{name}, null, null, null);
         boolean res = cursor.getCount() > 0;
         cursor.close();
         database.close();
-        Log.e("Foto", "Esiste? " + res);
+
         return res;
     }
 
@@ -107,9 +106,9 @@ public class Images {
             try {
                 database.insert(ImagesDataBase.TABLE_NAME, null, values);
                 saveBitmapToDisk(name, bitmap);
-                Log.e("DATABASE", "Image added, count: " + (count + 1));
+
             } catch(SQLiteConstraintException e) {
-                Log.e("DATABASE", "Fallimento aggiunta immagine");
+                e.printStackTrace();
             }
         } else {
             //altrimenti devo eliminare qualche foto vecchia per non appesantire lo smartphone
@@ -148,7 +147,7 @@ public class Images {
             outputStream = context.openFileOutput(name, Context.MODE_PRIVATE);
             outputStream.write(string.getBytes());
             outputStream.close();
-            Log.e("Foto", "foto scritta su disco, dimensione: " + string.length());
+
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -170,7 +169,6 @@ public class Images {
                 sb.append(line);
             }
             res = sb.toString();
-            Log.e("Foto", "Dim: " + res.length());
             fis.close();
         } catch(IOException e) {
             e.printStackTrace();
