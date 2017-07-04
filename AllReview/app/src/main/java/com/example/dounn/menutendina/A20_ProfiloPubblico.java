@@ -297,7 +297,7 @@ public class A20_ProfiloPubblico extends LoggedActivity {
             imageProfile.setFotoPath(fotopath);
         }
 
-        dataTextView.setText(getResources().getString(R.string.Registrato) + " " + utenteRed.reduceData());
+        dataTextView.setText(getResources().getString(R.string.Registrato) + " " + utenteRed.completeData());
 
         // SETTING DEL BOTTONE CARICAMENTO FOTO
 
@@ -321,8 +321,8 @@ public class A20_ProfiloPubblico extends LoggedActivity {
         myTextLevelInit.setText(String.valueOf(initLevel));
         myTextLevelFine.setText(String.valueOf(finalLevel));
 
-        myTextLevel.setText(getResources().getString(R.string.Livello) + level);
-        myTextProgress.setText(getResources().getString(R.string.Punteggio) + punteggio);
+        myTextLevel.setText(getResources().getString(R.string.Livello) + " " + level);
+        myTextProgress.setText(getResources().getString(R.string.Punteggio) + " " + punteggio);
 
         final int max_state = 1000 * (punteggio - points_down) / (points_up - points_down);
 

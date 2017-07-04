@@ -77,7 +77,7 @@
     <string name="A15_button_crealo">CREATE</string>
     <string name="Profilo">Profile</string>
     <string name="no_internet">No Internet Connection</string>
-    <string name="carica_nuova_immagine">CUpload new photo</string>
+    <string name="carica_nuova_immagine">Upload new photo</string>
     <string name="punteggi_e_livelli">Levels and Scores</string>
     <string name="max_values_utente">Every day you can make  {0} reviews, vote {1} times and make {2} questions. Today you can do {3} reviews, vote {4} times and make {5} questions</string>
     <string name="Domanda_Assistenza">Insert a title for your report</string>

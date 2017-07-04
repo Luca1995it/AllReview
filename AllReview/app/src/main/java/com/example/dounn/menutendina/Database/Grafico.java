@@ -1,25 +1,22 @@
 package com.example.dounn.menutendina.Database;
 
-import com.example.dounn.menutendina.Utility.Utility;
 import com.jjoe64.graphview.series.DataPoint;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 /**
  * Created by lucadiliello on 12/06/2017.
  */
 
-public class Grafico {
+public class Grafico extends SuperDB {
 
     private DataPoint[] punti;
     private int[] date;
 
     Grafico(JSONArray result) throws JSONException {
-
+        super(0);
         punti = new DataPoint[result.length() > 2 ? result.length() : 3];
         date = new int[result.length() > 2 ? result.length() : 3];
 
@@ -61,24 +58,20 @@ public class Grafico {
 
             for(int j = 0; j < res.length; j++) res[j] = "";
 
-            res[0] = getDate(date[0]);
-            res[punti.length / 2] = getDate(date[punti.length / 2]);
-            res[punti.length - 1] = getDate(date[punti.length - 1]);
+            res[0] = simpleFormatter.format(date[0] * 1000L);
+            res[punti.length / 2] = simpleFormatter.format(date[punti.length / 2] * 1000L);
+            res[punti.length - 1] = simpleFormatter.format(date[punti.length - 1] * 1000L);
 
             return res;
         } else {
 
             for(int j = 0; j < res.length; j++) res[j] = "";
 
-            res[1] = getDate(date[0]);
-            res[punti.length / 2] = getDate(date[punti.length / 2]);
-            res[punti.length - 2] = getDate(date[punti.length - 1]);
+            res[1] = simpleFormatter.format(date[0] * 1000L);
+            res[punti.length / 2] = simpleFormatter.format(date[punti.length / 2] * 1000L);
+            res[punti.length - 2] = simpleFormatter.format(date[punti.length - 1] * 1000L);
 
             return res;
         }
-    }
-
-    private String getDate(int a) {
-        return Utility.format_grafico.format(new Date(a).getTime());
     }
 }

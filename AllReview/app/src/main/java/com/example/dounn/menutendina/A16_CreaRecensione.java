@@ -1,10 +1,12 @@
 package com.example.dounn.menutendina;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -52,6 +54,8 @@ public class A16_CreaRecensione extends SuperActivity {
     ImageView immagineAllega;
     Bitmap resizedBitmap;
     Button pubblica;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
 
     //elementi per i puntini sotto le immagini scorrevoli
     LinearLayout sliderDotspanel;
@@ -249,6 +253,31 @@ public class A16_CreaRecensione extends SuperActivity {
             @Override
             public void onClick(View v) {
                 openImageIntent();
+            }
+        });
+        immagineAllega.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder = new AlertDialog.Builder(A16_CreaRecensione.this);
+                builder.setCancelable(true);
+                builder.setPositiveButton(
+                        getResources().getString(R.string.Yes),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                resizedBitmap=null;
+                                immagineAllega.setImageBitmap(null);
+                                dialog.cancel();
+                            }
+                        });
+                builder.setNegativeButton( getResources().getString(R.string.No),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.setMessage(getResources().getString(R.string.Delete_element));
+                alertDialog = builder.create();
+                alertDialog.show();
             }
         });
     }

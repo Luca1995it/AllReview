@@ -1,7 +1,5 @@
 package com.example.dounn.menutendina.Database;
 
-import com.example.dounn.menutendina.SuperActivity;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -13,6 +11,10 @@ import java.util.Locale;
 
 public class SuperDB {
 
+    static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+    static SimpleDateFormat completeFormatter = new SimpleDateFormat("yyyy-MM-dd, HH:mm", Locale.getDefault());
+    static SimpleDateFormat simpleFormatter = new SimpleDateFormat("MM-dd", Locale.getDefault());
+
     int data;
 
     SuperDB(int data) {
@@ -20,13 +22,11 @@ public class SuperDB {
     }
 
     public String reduceData() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         return formatter.format(new Date(data * 1000L));
     }
 
     public String completeData() {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-        return formatter.format(new Date(data * 1000L));
+        return completeFormatter.format(new Date(data * 1000L));
     }
 
 }

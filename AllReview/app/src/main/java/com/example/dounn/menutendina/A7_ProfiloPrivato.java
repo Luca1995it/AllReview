@@ -171,7 +171,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
                 profileImageButton.setText(getResources().getString(R.string.carica_nuova_immagine));
             }
 
-            dataTextview.setText(getResources().getString(R.string.Registrato) + " " + getUser().reduceData());
+            dataTextview.setText(getResources().getString(R.string.Registrato) + " " + getUser().completeData());
 
             // SETTING DEL BOTTONE CARICAMENTO FOTO
 
