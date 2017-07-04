@@ -198,6 +198,8 @@ public class A1_LoginIniziale extends SuperActivity {
                                     stopCaricamento(100);
                                 } catch(JSONException e) {
                                     Log.e("errore conversione login json,", " Oggetto json:" + a.toString() + "\nErrore:\n" + e.toString());
+                                    stopCaricamento(100);
+                                    errorBar(getResources().getString(R.string.errore_server),2000);
                                 }
                             }
 

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.dounn.menutendina.Adapters.ElementoAdapter;
 import com.example.dounn.menutendina.Database.Elemento;
@@ -67,6 +68,22 @@ public class A26_RisultatiRicerca extends SuperActivity {
                             Intent i = new Intent(ctx, A27_PaginaElemento.class);
                             ElementoAdapter adapter = new ElementoAdapter(ctx, elementos, i);
                             recyclerView.setAdapter(adapter);
+
+                            if (elementos.size() == 0){
+                                Button crea_elemento = (Button) findViewById(R.id.elemento_non_trovato_a26);
+
+                                setGone(recyclerView);
+                                setVisible(crea_elemento);
+
+                                crea_elemento.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(ctx, A21_InserisciElemento.class);
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+
                             stopCaricamento(200);
                         } else {
                             Log.e("Successo", "Errore:" + a.getString("status"));

@@ -43,6 +43,7 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
     TextView titoloElemento;
     ViewPager viewPager;
     RatingBar votazioneElemento;
+    TextView testoVotazioneElemento;
     TextView getCategoria;
     TextView descrizione;
     Button bottonePreferiti;
@@ -82,6 +83,7 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
         caricamentoPreferiti = (ProgressBar) findViewById(R.id.progress_preferiti_a27);
         bottoneSegnala = (Button) findViewById(R.id.segnala_elemento_a27);
         votazioneElemento = (RatingBar) findViewById(R.id.votazione_complessiva_elemento);
+        testoVotazioneElemento = (TextView) findViewById(R.id.textvie_votazione_stelle_a27);
         getCategoria = (TextView) findViewById(R.id.get_categoria);
         descrizione = (TextView) findViewById(R.id.descrizione_elemento);
         domandeRisposteButton = (Button) findViewById(R.id.domande_e_risposte_button);
@@ -94,10 +96,16 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        update();
+    }
+
     void update() {
         JSONObject req = new JSONObject();
 
-        startCaricamento(100, getResources().getString(R.string.aggiorno));
+        startCaricamento(0, getResources().getString(R.string.aggiorno));
         try {
             req.put("path", "elemento");
             req.put("id_elemento", elemento.getId());
@@ -160,9 +168,12 @@ public class A27_PaginaElemento extends SuperActivity implements MyDialogFragmen
         titoloElemento.setText(elemento.getNome());
         getCategoria.setText(elemento.getCategoria());
         votazioneElemento.setRating(elemento.getRating());
+        testoVotazioneElemento.setText(String.format("%.1f", (elemento.getRating())));
         descrizione.setText(elemento.getDescr());
 
-        //*Richiesta per le recensioni dell'elemento **
+        Log.d("Risultati a27" , String.valueOf(elemento.getRating()));
+
+        //Richiesta per le recensioni dell'elemento *
         JSONObject req = new JSONObject();
 
         //carico la recyclerView per le recensioni

@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by lucadiliello on 02/06/2017.
@@ -54,6 +55,24 @@ public class Images {
         }
         db.close();
         return res;
+    }
+
+
+    public synchronized static void freeUpSpace() {
+        SQLiteDatabase db = database.getReadableDatabase();
+        String[] projection = {database.COLUMN_NAME};
+        Cursor cursor = db.query(database.TABLE_NAME, projection, null, null, null, null, null);
+        ArrayList<String> items = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            String tmp = cursor.getString(0);
+            items.add(tmp);
+        }
+        for(String s : items) {
+            deleteBitmapFromDisk(s);
+        }
+        db.delete(database.TABLE_NAME, null, null);
+        cursor.close();
+        db.close();
     }
 
     public synchronized static boolean containsImage(String name) {

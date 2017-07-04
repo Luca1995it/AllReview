@@ -240,4 +240,19 @@
         android:paddingRight="30dp"
         android:text="@string/classifica_utenti"
         android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/freespace"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bottone_default"
+        android:drawableLeft="@mipmap/trash"
+        android:paddingLeft="40dp"
+        android:paddingRight="30dp"
+        android:text="@string/free_up_space"
+        android:textColor="@color/white"/>
 </LinearLayout>

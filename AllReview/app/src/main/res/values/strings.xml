@@ -226,7 +226,7 @@
     <string name="n4">Ricevi una notifica quando ricevi una risposta alla tua domanda</string>
     <string name="n5">Ricevi una notifica quando una tua risposta è scelta come la migliore</string>
     <string name="Progress">Progresso</string>
-    <string name="Not_info">INFORMAZIONI SULLA MODIFICA</string>
+    <string name="Info_Modifica">INFORMAZIONI SULLA MODIFICA</string>
     <string name="back">Indietro</string>
     <string name="Proceed">Procedi</string>
     <string name="Alert_modifica">Se modifichi l oggetto in modo sconsiderato, verrai segnalato agli amministratori del portale. Nel caso in cui gli amministratori decidessero di eliminare la tua modifica, ti verranno tolti 30 punti</string>
@@ -255,5 +255,8 @@
     <string name="title_allert_anonimo">Avviso</string>
     <string name="Yes">Si</string>
     <string name="No">No</string>
-    <string name="Delete_element">Vuoi eliminare questo oggetto?</string>
+    <string name="Delete_element">Vuoi eliminare questa foto?</string>
+    <string name="free_up_space">Elimina dati applicazione</string>
+    <string name="freeing">Libero spazio ...</string>
+    <string name="crea_nuovo_elemento">Crea nuovo elemento</string>
 </resources>

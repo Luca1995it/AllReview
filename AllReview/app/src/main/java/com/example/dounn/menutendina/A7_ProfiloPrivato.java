@@ -52,6 +52,7 @@ public class A7_ProfiloPrivato extends LoggedActivity {
 
     private Button moreInfo;
     private Button classifica;
+    private Button freespace;
     //Buttons
 
     private TextView dataTextview;
@@ -110,6 +111,33 @@ public class A7_ProfiloPrivato extends LoggedActivity {
 
         moreInfo = (Button) findViewById(R.id.more_info);
         classifica = (Button) findViewById(R.id.classifica);
+        freespace = (Button) findViewById(R.id.freespace);
+
+        freespace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCaricamento(0,getResources().getString(R.string.freeing));
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(1000);
+                        } catch(InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Images.freeUpSpace();
+                                stopCaricamento(100);
+                                successBar("Spazio liberato con successo", 3000);
+                            }
+                        });
+                    }
+                }).start();
+
+            }
+        });
 
         moreInfo.setOnClickListener(new View.OnClickListener() {
             @Override
