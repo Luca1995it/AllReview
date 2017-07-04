@@ -1,5 +1,7 @@
 package com.example.dounn.menutendina.Database;
 
+import android.util.Log;
+
 import com.jjoe64.graphview.series.DataPoint;
 
 import org.json.JSONArray;
@@ -19,7 +21,6 @@ public class Grafico extends SuperDB {
         super(0);
         punti = new DataPoint[result.length() > 2 ? result.length() : 3];
         date = new int[result.length() > 2 ? result.length() : 3];
-
 
         if(result.length() > 2) {
             for(int i = 0; i < result.length(); i++) {
@@ -45,6 +46,7 @@ public class Grafico extends SuperDB {
                 date[i] = (int) (System.currentTimeMillis() / 1000);
             }
         }
+        Log.e("Datapoint", punti.length + "");
     }
 
 
@@ -67,9 +69,9 @@ public class Grafico extends SuperDB {
 
             for(int j = 0; j < res.length; j++) res[j] = "";
 
-            res[1] = simpleFormatter.format(date[0] * 1000L);
+            res[1] = simpleFormatter.format(date[1] * 1000L);
             res[punti.length / 2] = simpleFormatter.format(date[punti.length / 2] * 1000L);
-            res[punti.length - 2] = simpleFormatter.format(date[punti.length - 1] * 1000L);
+            res[punti.length - 2] = simpleFormatter.format(date[punti.length - 2] * 1000L);
 
             return res;
         }

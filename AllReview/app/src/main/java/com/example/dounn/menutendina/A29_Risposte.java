@@ -42,7 +42,7 @@ public class A29_Risposte extends SuperActivity {
     public ImageViewLoading fotoProfiloRisposta;
     public TextView utenteMigliorRisposta;
     public TextView migliorRisposta;
-    public TextView orario_risposta;
+    public TextView orarioRisposta;
 
     private RisposteAdapter adapter;
     private RecyclerView recyclerView;
@@ -70,7 +70,7 @@ public class A29_Risposte extends SuperActivity {
         utenteMigliorRisposta = (TextView) findViewById(R.id.utente_miglior_risposta);
         migliorRisposta = (TextView) findViewById(R.id.miglior_risposta);
         risposteUtenti = (TextView) findViewById(R.id.risposte_utenti);
-        orario_risposta = (TextView) findViewById(R.id.orario_risposta);
+        orarioRisposta = (TextView) findViewById(R.id.orario_risposta);
 
         //Inserisci nuova risposta
         inserisciRisposta = (Button) findViewById(R.id.inserisci_risposta);
@@ -168,7 +168,7 @@ public class A29_Risposte extends SuperActivity {
             utenteMigliorRisposta.setText(domanda.getRispostaTop().getUtente().getUsername());
             migliorRisposta.setText(domanda.getRispostaTop().getTesto());
             fotoProfiloRisposta.setFotoPath(domanda.getRispostaTop().getUtente().getFotopath());
-            orario_risposta.setText(domanda.getRispostaTop().reduceData());
+            orarioRisposta.setText(domanda.getRispostaTop().reduceData());
         } else {
             settoreMigliorRisposta.setVisibility(View.GONE);
         }
@@ -177,6 +177,8 @@ public class A29_Risposte extends SuperActivity {
 
         if(domanda.getRisposte().size() == 0) {
             risposteUtenti.setText(getResources().getString(R.string.risposte_utenti_non));
+        } else {
+            risposteUtenti.setText(getResources().getString(R.string.riposte_per_questa_domanda));
         }
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);

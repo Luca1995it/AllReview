@@ -8,7 +8,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
-import java.text.StringCharacterIterator;
 
 import static com.example.dounn.menutendina.Database.Notifica.Tipo.MiaMigliorRisposta;
 import static com.example.dounn.menutendina.Database.Notifica.Tipo.NuovaRecensioneOggettoCheSeguo;
