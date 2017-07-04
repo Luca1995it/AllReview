@@ -1,7 +1,6 @@
 package com.example.dounn.menutendina.Database;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.example.dounn.menutendina.R;
 
@@ -71,6 +70,10 @@ public class Notifica extends SuperDB {
                 elemento = new Elemento(o.getJSONObject("elemento"));
                 break;
         }
+    }
+
+    public int getDataInt() {
+        return data;
     }
 
     public int getId() {

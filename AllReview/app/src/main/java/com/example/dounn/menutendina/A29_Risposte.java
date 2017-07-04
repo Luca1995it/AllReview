@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.dounn.menutendina.Adapters.RisposteAdapter;
 import com.example.dounn.menutendina.Database.Domanda;
+import com.example.dounn.menutendina.Database.Risposta;
 import com.example.dounn.menutendina.Database.Store;
 import com.example.dounn.menutendina.OtherView.ImageViewLoading;
 import com.example.dounn.menutendina.Utility.Request;
@@ -19,6 +21,8 @@ import com.example.dounn.menutendina.Utility.Utility;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
@@ -81,7 +85,7 @@ public class A29_Risposte extends SuperActivity {
             inserisciRisposta.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    errorBar(getResources().getString(R.string.not_logged),2000);
+                    errorBar(getResources().getString(R.string.not_logged), 2000);
                 }
             });
         }
@@ -89,11 +93,12 @@ public class A29_Risposte extends SuperActivity {
         //Lista risposte
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        enableOnScrollDownAction();
-
         domanda = (Domanda) Store.get("domanda");
-        if(domanda != null) init();
-        else if(getIntent().hasExtra("id_domanda")) {
+        Log.e("Domanda1", domanda + "");
+        if(domanda != null) {
+            init();
+            enableOnScrollDownAction();
+        } else if(getIntent().hasExtra("id_domanda")) {
             int id_domanda = getIntent().getIntExtra("id_domanda", 1);
             focusId = getIntent().getIntExtra("focus", -1);
 
@@ -107,7 +112,10 @@ public class A29_Risposte extends SuperActivity {
                         try {
                             if(a.getString("status").equals("OK")) {
                                 domanda = new Domanda(a.getJSONObject("domanda"));
+                                Log.i("Successo","Ho settato la domanda");
+
                                 init();
+                                enableOnScrollDownAction();
                             } else throw new JSONException("else");
 
                         } catch(JSONException e) {
@@ -129,7 +137,7 @@ public class A29_Risposte extends SuperActivity {
     }
 
     void init() {
-
+        Log.i("Successo","Quando entro in init?");
         scegliTopRisposta = isActivated() && (domanda.getRispostaTop() == null) && (domanda.getUtente().getId() == getUser().getId());
 
         //setting domanda
@@ -167,7 +175,7 @@ public class A29_Risposte extends SuperActivity {
             settoreMigliorRisposta.setVisibility(View.GONE);
         }
 
-        adapter = new RisposteAdapter(this, domanda.getRisposte(), focusId, scegliTopRisposta);
+        adapter = new RisposteAdapter(this, domanda.getRisposte() == null ? new ArrayList<Risposta>() : domanda.getRisposte(), focusId, scegliTopRisposta);
 
         if(domanda.getRisposte().size() == 0) {
             risposteUtenti.setText(getResources().getString(R.string.risposte_utenti_non));
@@ -189,38 +197,39 @@ public class A29_Risposte extends SuperActivity {
     @Override
     public void onScrollDownAction() {
         super.onScrollDownAction();
-        startCaricamento(50, getResources().getString(R.string.aggiorno));
-        int id_domanda = domanda.getId();
-        JSONObject req = new JSONObject();
-        try {
-            req.put("path", "domanda");
-            req.put("id_domanda", id_domanda);
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
-        new Request(new RequestCallback() {
-            @Override
-            public void inTheEnd(JSONObject a) {
-                try {
-                    if(a.getString("status").equals("OK")) {
-                        domanda = new Domanda(a.getJSONObject("result"));
-                        adapter.update(domanda.getRisposte(), scegliTopRisposta);
-                        Store.add("domanda", domanda);
-                        init();
+        if(domanda == null) {
+            startCaricamento(50, getResources().getString(R.string.aggiorno));
+
+            int id_domanda = domanda.getId();
+            JSONObject req = new JSONObject();
+            try {
+                req.put("path", "domanda");
+                req.put("id_domanda", id_domanda);
+            } catch(JSONException e) {
+                e.printStackTrace();
+            }
+            new Request(new RequestCallback() {
+                @Override
+                public void inTheEnd(JSONObject a) {
+                    try {
+                        if(a.getString("status").equals("OK")) {
+                            domanda = new Domanda(a.getJSONObject("result"));
+                            adapter.update(domanda.getRisposte(), scegliTopRisposta);
+                            Store.add("domanda", domanda);
+                            init();
+                        }
+                    } catch(JSONException e) {
+                        e.printStackTrace();
                     }
-                } catch(JSONException e) {
-                    e.printStackTrace();
+                    stopCaricamento(100);
                 }
-                stopCaricamento(100);
-            }
 
-            @Override
-            public void noInternetConnection() {
-                stopCaricamento(100);
-                noInternetErrorBar();
-            }
-        }).execute(req);
+                @Override
+                public void noInternetConnection() {
+                    stopCaricamento(100);
+                    noInternetErrorBar();
+                }
+            }).execute(req);
+        }
     }
-
-
 }

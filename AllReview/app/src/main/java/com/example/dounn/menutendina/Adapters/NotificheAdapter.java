@@ -3,6 +3,7 @@ package com.example.dounn.menutendina.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.example.dounn.menutendina.OtherView.ImageViewLoading;
 import com.example.dounn.menutendina.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by lucadiliello on 16/06/2017.
@@ -28,15 +31,30 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
 
     private ArrayList<Notifica> notifiche;
     Context context;
+    private Comparator<Notifica> comparator = new Comparator<Notifica>() {
+        @Override
+        public int compare(Notifica o1, Notifica o2) {
+            if(o1.getDataInt() > o2.getDataInt()) return -1;
+            else if(o1.getDataInt() > o2.getDataInt()) return +1;
+            else return 0;
+        }
+    };
 
     public NotificheAdapter(Context context, ArrayList<Notifica> notifiche) {
         this.context = context;
         this.notifiche = notifiche;
+        order();
     }
 
     public void update(ArrayList<Notifica> e) {
         notifiche = e;
+        order();
         notifyDataSetChanged();
+    }
+
+    private void order() {
+        if(notifiche == null) return;
+        Collections.sort(notifiche,comparator);
     }
 
     public Notifica getItem(int position) {
@@ -56,8 +74,8 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
                 if(position != RecyclerView.NO_POSITION) {
                     Notifica not = getItem(position);
                     Intent i;
+                    Log.e("Notifica","Tipo: " + not.getTipo());
                     switch(not.getTipo()) {
-
                         case NuovaRecensioneOggettoCheSeguo:
                             i = new Intent(context, A27_PaginaElemento.class);
                             i.putExtra("focus", not.getRecensione().getId());
