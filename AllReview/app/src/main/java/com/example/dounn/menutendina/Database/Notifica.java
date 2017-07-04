@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.MessageFormat;
+import java.text.StringCharacterIterator;
 
 import static com.example.dounn.menutendina.Database.Notifica.Tipo.MiaMigliorRisposta;
 import static com.example.dounn.menutendina.Database.Notifica.Tipo.NuovaRecensioneOggettoCheSeguo;
@@ -120,13 +121,14 @@ public class Notifica extends SuperDB {
         String message;
         switch(getTipo()) {
             case NuovaRecensioneOggettoCheSeguo:
-                message = MessageFormat.format(context.getResources().getString(R.string.nuovaRecOggetto), getRecensione().getElemento().getNome());
+                message = MessageFormat.format(context.getResources().getString(R.string.nuovaRecOggetto), new String[]{getRecensione().getElemento().getNome(),getRecensione().getUtente().getUsername()});
                 break;
             case NuovaRecensioneUtenteCheSeguo:
-                message = MessageFormat.format(context.getResources().getString(R.string.nuovaRecUtente), getRecensione().getUtente().getUsername());
+                message = MessageFormat.format(context.getResources().getString(R.string.nuovaRecUtente), new String[]{getRecensione().getUtente().getUsername(), getRecensione().getElemento().getNome()});
                 break;
             case NuovoVotoMiaRecensione:
-                message = MessageFormat.format(context.getResources().getString(R.string.nuovoVotoMiaRec), getVoto().getRecensione().getElemento().getNome());
+                message = MessageFormat.format(context.getResources().getString(R.string.nuovoVotoMiaRec),
+                        new String[]{getVoto().getRecensione().getElemento().getNome(),getVoto().getUtente().getUsername(), getVoto().getVoto() > 0 ? context.getResources().getString(R.string.positivo) : context.getResources().getString(R.string.negativo)});
                 break;
             case NuovaRispostaMiaDomanda:
                 message = MessageFormat.format(context.getResources().getString(R.string.nuovaRispDom), getRisposta().getUtente().getUsername());

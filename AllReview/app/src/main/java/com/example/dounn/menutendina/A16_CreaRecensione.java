@@ -144,11 +144,10 @@ public class A16_CreaRecensione extends SuperActivity {
             @Override
             public void onClick(View v) {
 
-                //TODO cambiare lunghezza descrizione, per comodità messa bassa, poi va settata a 30
                 //se la lunghezza di titolo e descrizione vanno bene invio tutto al server
-                if(editTitolo.getText().toString().length() >= 4 && descrizione.getText().toString().length() >= 10) {
+                if(editTitolo.getText().toString().length() >= 4 && descrizione.getText().toString().length() >= 20) {
                     Utility.hideSoftKeyboard(A16_CreaRecensione.this);
-                    startCaricamentoTimeout(0, 200000, getResources().getString(R.string.caricamento_recensione));
+                    startCaricamento(0, getResources().getString(R.string.caricamento_recensione));
                     JSONObject req = new JSONObject();
                     //richiesta asincrona per controllo se utente ha già recensito elemento
                     try {
@@ -195,13 +194,14 @@ public class A16_CreaRecensione extends SuperActivity {
                                                                 getUser().fattaRecensione();
                                                                 Intent i = new Intent(ctx, A24_Recensione.class);
                                                                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                                //TODO caricamento troppo lungo????
                                                                 startActivity(i);
                                                                 finish();
                                                             }
                                                         } catch(JSONException e) {
                                                             errorBar(getResources().getString(R.string.Server_error), 2000);
                                                             e.printStackTrace();
+                                                        } finally {
+                                                            stopCaricamento(200);
                                                         }
                                                     }
 

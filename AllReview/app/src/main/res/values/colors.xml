@@ -47,4 +47,5 @@
     <color name="bottone_preferiti">#FFE634</color>
     <color name="bottone_rimuovi_preferiti">#E5CF2F</color>
     <color name="bottone_rimuovi_preferiti_scuro">#BFAA12</color>
+    <color name="verdino_light">#DDFFDD</color>
 </resources>

@@ -4,8 +4,10 @@ package com.example.dounn.menutendina;
  * Created by dounn on 31/05/2017.
  */
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -25,11 +27,25 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
     private EditText inserimentoCodice;
     private TextView erroreInvioCodice;
     private TextView erroreReinviaEmail;
+    AlertDialog.Builder builder;
+    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a4_layout);
+
+        builder = new AlertDialog.Builder(this, R.style.Dialog_theme);
+        builder.setCancelable(true);
+        builder.setNeutralButton(getResources().getString(R.string.Procedi),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent intent = new Intent(ctx, A10_HomePage.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
 
         inserimentoCodice = (EditText) findViewById(R.id.inserisci_codice);
         Button inviaCodice = (Button) findViewById(R.id.bottone_invia_codice);
@@ -58,10 +74,9 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
                                         if(!a.getString("status").equals("ERROR")) {
                                             //inserisco il token nella sessione
                                             attivaUser();
-                                            Intent intent = new Intent(ctx, A10_HomePage.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            //TODO messaggio di avvenuta registrazione con successo
+                                            builder.setMessage(getResources().getString(R.string.registrazione_succ));
+                                            alertDialog = builder.create();
+                                            alertDialog.show();
                                         } else {
                                             //se ci sono stati problemi mostro la stringa di errore
                                             erroreInvioCodice = (TextView) findViewById(R.id.errore_conferma_codice);
@@ -121,7 +136,7 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
                                         erroreReinviaEmail.setVisibility(View.VISIBLE);
                                     }
                                 } else {
-                                    errorBar(getResources().getString(R.string.errore_server),2000);
+                                    errorBar(getResources().getString(R.string.errore_server), 2000);
                                 }
                             } catch(JSONException e) {
                                 e.printStackTrace();

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.textservice.TextInfo;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -115,6 +116,7 @@ public class DomandeFilterAdapter extends RecyclerView.Adapter<DomandeFilterAdap
             viewHolder.fotoProfiloRisposta.setFotoPath(fotopathRisp);
             viewHolder.utenteMigliorRisposta.setText(domanda.getRispostaTop().getUtente().getUsername());
             viewHolder.migliorRisposta.setText(domanda.getRispostaTop().getTesto());
+            viewHolder.orario_risposta.setText(domanda.getRispostaTop().reduceData());
         } else {
             viewHolder.settoreMigliorRisposta.setVisibility(View.GONE);
         }
@@ -180,6 +182,7 @@ public class DomandeFilterAdapter extends RecyclerView.Adapter<DomandeFilterAdap
         ImageViewLoading fotoProfiloRisposta;
         TextView utenteMigliorRisposta;
         TextView migliorRisposta;
+        TextView orario_risposta;
 
         public ViewHolder(View convertView) {
             super(convertView);
@@ -191,6 +194,7 @@ public class DomandeFilterAdapter extends RecyclerView.Adapter<DomandeFilterAdap
             fotoProfiloRisposta = (ImageViewLoading) convertView.findViewById(R.id.foto_profilo_risposta);
             utenteMigliorRisposta = (TextView) convertView.findViewById(R.id.utente_miglior_risposta);
             migliorRisposta = (TextView) convertView.findViewById(R.id.miglior_risposta);
+            orario_risposta = (TextView) convertView.findViewById(R.id.orario_risposta);
         }
     }
 }

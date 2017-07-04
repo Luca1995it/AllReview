@@ -61,7 +61,7 @@ public class A21_InserisciElemento extends SuperActivity {
         /*
         ALERTDIALOG USATO PER I CONTROLLI
          */
-        builder = new AlertDialog.Builder(A21_InserisciElemento.this);
+        builder = new AlertDialog.Builder(this,R.style.Dialog_theme);
         builder.setCancelable(true);
         builder.setNeutralButton(
                 getResources().getString(R.string.understand),
@@ -219,7 +219,6 @@ public class A21_InserisciElemento extends SuperActivity {
     protected void onActivityResultImage(Bitmap bitmap) {
         bitmaps.add(bitmap);
 
-        //TODO DEVO TRAASFORMARE IL BITMAP IN FILE O STRING COME FARE?
         if(arrayList.get(countviews).getVisibility() == View.GONE) {
             arrayList.get(countviews).setVisibility(View.VISIBLE);
         }

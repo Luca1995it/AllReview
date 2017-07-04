@@ -77,7 +77,6 @@ public class RecensioniAdapter extends RecyclerView.Adapter<RecensioniAdapter.Vi
                 if(position != RecyclerView.NO_POSITION) {
                     Store.add("recensione", getItem(position));
                     Intent intent = new Intent(ctx, A24_Recensione.class);
-                    //TODO da vedere questi flag, senza crasha
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     ctx.startActivity(intent);
                 }
@@ -91,7 +90,6 @@ public class RecensioniAdapter extends RecyclerView.Adapter<RecensioniAdapter.Vi
                 if(position != RecyclerView.NO_POSITION) {
                     Intent intent = new Intent(ctx, A20_ProfiloPubblico.class);
                     intent.putExtra("id_utente", getItem(position).getUtente().getId());
-                    //TODO da vedere questi flag, senza crasha
                     intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                     ctx.startActivity(intent);
                 }

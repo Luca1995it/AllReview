@@ -3,7 +3,6 @@ package com.example.dounn.menutendina.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +73,6 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
                 if(position != RecyclerView.NO_POSITION) {
                     Notifica not = getItem(position);
                     Intent i;
-                    Log.e("Notifica","Tipo: " + not.getTipo());
                     switch(not.getTipo()) {
                         case NuovaRecensioneOggettoCheSeguo:
                             i = new Intent(context, A27_PaginaElemento.class);
@@ -84,11 +82,12 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
                         case NuovaRecensioneUtenteCheSeguo:
                             i = new Intent(context, A25_RecensioniUtente.class);
                             i.putExtra("focus", not.getRecensione().getId());
-                            Store.add("elemento", not.getRecensione().getId());
+                            i.putExtra("id_utente", not.getRecensione().getUtente().getId());
                             break;
                         case NuovaRispostaMiaDomanda:
                             i = new Intent(context, A29_Risposte.class);
                             i.putExtra("id_domanda", not.getRisposta().getIdDomanda());
+                            Store.add("domanda",null);
                             i.putExtra("focus", not.getRisposta().getId());
                             break;
                         case NuovoVotoMiaRecensione:
@@ -110,14 +109,12 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
                 }
             }
         });
-
         return res;
     }
 
     @Override
     public void onBindViewHolder(NotificheAdapter.ViewHolder viewHolder, int i) {
         Notifica not = getItem(i);
-
         viewHolder.notificaTx.setText(not.toString());
         viewHolder.notificaData.setText(context.getResources().getString(R.string.Data) + " " + not.completeData());
         viewHolder.notificaImg.setFotoPath(not.getFoto());
@@ -143,7 +140,6 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
             notificaImg = (ImageViewLoading) convertView.findViewById(R.id.notifica_img);
             notificaData = (TextView) convertView.findViewById(R.id.notifica_data);
             notificaTx = (TextView) convertView.findViewById(R.id.notifica_tx);
-
         }
     }
 }

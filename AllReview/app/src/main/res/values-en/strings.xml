@@ -90,7 +90,7 @@
     <string name="inserisci_titolo_crea_recensione">Insert review\'s title</string>
     <string name="inserisci_descrizione_crea_recensione">Insert here description</string>
     <string name="bottone_pubblica_recensione">Post</string>
-    <string name="allega_immagine">Attack an image</string>
+    <string name="allega_immagine">Attack an \nimage</string>
     <string name="errore_titolo_recensione">Title is too short. Enter at least 4 char</string>
     <string name="errore_descrizione_recensione">The description is too short, enter at least 30 characters</string>
     <string name="modifica_profilo">Modify Profile</string>
@@ -216,9 +216,9 @@
     <string name="gianegativo">You have already added a negative mark for this review</string>
     <string name="terminati_voti">You have already used all available marks for today</string>
     <string name="titolo_segnalazione_recensione">Report this review</string>
-    <string name="nuovaRecOggetto">{0} received a new review</string>
-    <string name="nuovaRecUtente">{0} published a new review</string>
-    <string name="nuovoVotoMiaRec">Your review on the element {0} has been voted</string>
+    <string name="nuovaRecOggetto">{0} received a new review from {1}</string>
+    <string name="nuovaRecUtente">{0} published a new review on {1}</string>
+    <string name="nuovoVotoMiaRec">Your review on the element {0} has been voted by {1} {2}</string>
     <string name="nuovaRispDom">{0} answered one of your questions</string>
     <string name="miaRispTop">Your answer has been marked as TOP</string>
     <string name="notificaDefault">There are new notify</string>
@@ -264,4 +264,13 @@
     <string name="not_available">n.a.</string>
     <string name="not_logged">You have to be logged in to insert answers</string>
     <string name="personal_email">Current email address: {0}</string>
+    <string name="il">the</string>
+    <string name="nuova_domanda">Insert a new question</string>
+    <string name="domanda">Ask</string>
+    <string name="riposte_per_questa_domanda">Answers from users to this question</string>
+    <string name="pubblicato_in_data">Written on date</string>
+    <string name="recensioni_utente">User Reviews</string>
+    <string name="positivo">positivitly</string>
+    <string name="negativo">negativitly</string>
+    <string name="registrazione_succ">Ti sei registrato con successo</string>
 </resources>

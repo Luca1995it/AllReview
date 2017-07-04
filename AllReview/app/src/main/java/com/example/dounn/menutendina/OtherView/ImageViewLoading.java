@@ -130,7 +130,7 @@ public class ImageViewLoading extends FrameLayout {
                                             setImageBitmap(foto);
                                         } else throw new JSONException("");
                                     } catch(JSONException e) {
-                                        //TODO cambiare con immagine default per recensione
+                                        e.printStackTrace();
                                         setImageResource(R.mipmap.ic_broken_image_black_24dp);
                                     }
                                 }

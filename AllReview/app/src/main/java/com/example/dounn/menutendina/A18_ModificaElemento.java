@@ -191,7 +191,7 @@ public class A18_ModificaElemento extends SuperActivity {
 
             if(updateCategoria) {
                 if(dropdown.getSelectedItemPosition() == 0) {
-                    builder.setMessage("Devi scegliere almeno una categoria");
+                    builder.setMessage(getResources().getString(R.string.errore_categoria));
                     alertDialog = builder.create();
                     alertDialog.show();
                     return;
@@ -202,7 +202,7 @@ public class A18_ModificaElemento extends SuperActivity {
 
             if(updateNome) {
                 if(etNomeElemento.getText().length() < 4) {
-                    builder.setMessage("Il nome deve avere contenere almeno 4 caratteri");
+                    builder.setMessage(getResources().getString(R.string.Char_insert_name));
                     alertDialog = builder.create();
                     alertDialog.show();
                     return;
@@ -213,7 +213,7 @@ public class A18_ModificaElemento extends SuperActivity {
 
             if(updateDescrizione) {
                 if(etDescrizione.getText().length() < 20) {
-                    builder.setMessage("La descrizione deve essere lunga almeno 20 caratteri");
+                    builder.setMessage(getResources().getString(R.string.Char_insert_descr));
                     alertDialog = builder.create();
                     alertDialog.show();
                     return;

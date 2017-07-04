@@ -35,8 +35,6 @@ public class PulsanteNotifica {
 
         imageButton = (ImageButton) notifCount.findViewById(R.id.action_bar_notification_imageview);
 
-        //notifiche TODO NUMERO DI NOTIFICHE
-
         textView.setText("0");
         imageButton.setOnClickListener(new View.OnClickListener() {
 

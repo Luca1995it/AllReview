@@ -90,7 +90,7 @@
     <string name="inserisci_titolo_crea_recensione">Inserisci qui il titolo della recensione</string>
     <string name="inserisci_descrizione_crea_recensione">Inserisci qui la descrizione completa della descrizione</string>
     <string name="bottone_pubblica_recensione">PUBBLICA</string>
-    <string name="allega_immagine">ALLEGA UNA\nIMMAGINE</string>
+    <string name="allega_immagine">Allega un\nimmagine</string>
     <string name="errore_titolo_recensione">Il titolo è troppo corto, inserisci almeno 4 caratteri</string>
     <string name="errore_descrizione_recensione">La descrizione è troppo corta, inserisci almeno 30 caratteri</string>
     <string name="modifica_profilo">Modifica Profilo</string>
@@ -197,8 +197,8 @@
     <string name="understand">Ho Capito</string>
     <string name="Foto_insert">Devi inserire almeno una foto</string>
     <string name="Category_insert">Devi scegliere almeno una categoria</string>
-    <string name="Char_insert_name">Caratteri insufficienti per il nome</string>
-    <string name="Char_insert_descr">Caratteri insufficienti per la descrizione</string>
+    <string name="Char_insert_name">Devi inserire almeno 4 caratteri per il nome</string>
+    <string name="Char_insert_descr">Devi inserire almeno 20 caratteri per la descrizione</string>
     <string name="Loading_ele">Caricamento elemento</string>
     <string name="Loading_rece">Caricamento recensioni</string>
     <string name="save_foto">Salvataggio voto</string>
@@ -242,9 +242,9 @@
     <string name="gianegativo">Hai gia inserito una votazione negativa per questa recensione</string>
     <string name="terminati_voti">Hai terminato il numero di voti consentiti per oggi</string>
     <string name="titolo_segnalazione_recensione">Inserisci la tua segnalazione per questa recensione</string>
-    <string name="nuovaRecOggetto">{0} ha ricevuto una nuova recensione</string>
-    <string name="nuovaRecUtente">{0} ha pubblicato una nuova recensione</string>
-    <string name="nuovoVotoMiaRec">La tua recensione su {0} è stata votata</string>
+    <string name="nuovaRecOggetto">{0} ha ricevuto una nuova recensione da {1}</string>
+    <string name="nuovaRecUtente">{0} ha pubblicato una nuova recensione su {1}</string>
+    <string name="nuovoVotoMiaRec">La tua recensione su {0} è stata votata da {1} {2}</string>
     <string name="nuovaRispDom">{0} ha risposto ad una tua domanda</string>
     <string name="miaRispTop">La tua risposta è stata scelta come migliore</string>
     <string name="notificaDefault">Ci sono nuove notifiche</string>
@@ -287,4 +287,7 @@
     <string name="not_available">n.a.</string>
     <string name="not_logged">Devi registrarti per poter fare domande</string>
     <string name="personal_email">Indirizzo email corrente: {0}</string>
+    <string name="positivo">positivamente</string>
+    <string name="negativo">negativamente</string>
+    <string name="registrazione_succ">Ti sei registrato con successo</string>
 </resources>

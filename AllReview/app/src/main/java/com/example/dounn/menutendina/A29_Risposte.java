@@ -42,6 +42,7 @@ public class A29_Risposte extends SuperActivity {
     public ImageViewLoading fotoProfiloRisposta;
     public TextView utenteMigliorRisposta;
     public TextView migliorRisposta;
+    public TextView orario_risposta;
 
     private RisposteAdapter adapter;
     private RecyclerView recyclerView;
@@ -69,6 +70,7 @@ public class A29_Risposte extends SuperActivity {
         utenteMigliorRisposta = (TextView) findViewById(R.id.utente_miglior_risposta);
         migliorRisposta = (TextView) findViewById(R.id.miglior_risposta);
         risposteUtenti = (TextView) findViewById(R.id.risposte_utenti);
+        orario_risposta = (TextView) findViewById(R.id.orario_risposta);
 
         //Inserisci nuova risposta
         inserisciRisposta = (Button) findViewById(R.id.inserisci_risposta);
@@ -103,15 +105,14 @@ public class A29_Risposte extends SuperActivity {
 
             JSONObject req = new JSONObject();
             try {
-                req.put("path", "risposte");
+                req.put("path", "domanda");
                 req.put("id_domanda", id_domanda);
                 new Request(new RequestCallback() {
                     @Override
                     public void inTheEnd(JSONObject a) {
                         try {
                             if(a.getString("status").equals("OK")) {
-                                domanda = new Domanda(a.getJSONObject("domanda"));
-
+                                domanda = new Domanda(a.getJSONObject("result"));
                                 init();
                                 enableOnScrollDownAction();
                             } else throw new JSONException("else");
@@ -147,7 +148,6 @@ public class A29_Risposte extends SuperActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ctx, A20_ProfiloPubblico.class);
                 intent.putExtra("id_utente", domanda.getUtente().getId());
-                //TODO da vedere questi flag, senza crasha
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 ctx.startActivity(intent);
             }
@@ -168,6 +168,7 @@ public class A29_Risposte extends SuperActivity {
             utenteMigliorRisposta.setText(domanda.getRispostaTop().getUtente().getUsername());
             migliorRisposta.setText(domanda.getRispostaTop().getTesto());
             fotoProfiloRisposta.setFotoPath(domanda.getRispostaTop().getUtente().getFotopath());
+            orario_risposta.setText(domanda.getRispostaTop().reduceData());
         } else {
             settoreMigliorRisposta.setVisibility(View.GONE);
         }
@@ -194,7 +195,7 @@ public class A29_Risposte extends SuperActivity {
     @Override
     public void onScrollDownAction() {
         super.onScrollDownAction();
-        if(domanda == null) {
+        if(domanda != null) {
             startCaricamento(50, getResources().getString(R.string.aggiorno));
 
             int id_domanda = domanda.getId();
@@ -202,31 +203,34 @@ public class A29_Risposte extends SuperActivity {
             try {
                 req.put("path", "domanda");
                 req.put("id_domanda", id_domanda);
+
+                new Request(new RequestCallback() {
+                    @Override
+                    public void inTheEnd(JSONObject a) {
+                        try {
+                            if(a.getString("status").equals("OK")) {
+                                domanda = new Domanda(a.getJSONObject("result"));
+                                adapter.update(domanda.getRisposte(), scegliTopRisposta);
+                                Store.add("domanda", domanda);
+                                init();
+                            }
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                        stopCaricamento(100);
+                    }
+
+                    @Override
+                    public void noInternetConnection() {
+                        stopCaricamento(100);
+                        noInternetErrorBar();
+                    }
+                }).execute(req);
             } catch(JSONException e) {
                 e.printStackTrace();
             }
-            new Request(new RequestCallback() {
-                @Override
-                public void inTheEnd(JSONObject a) {
-                    try {
-                        if(a.getString("status").equals("OK")) {
-                            domanda = new Domanda(a.getJSONObject("result"));
-                            adapter.update(domanda.getRisposte(), scegliTopRisposta);
-                            Store.add("domanda", domanda);
-                            init();
-                        }
-                    } catch(JSONException e) {
-                        e.printStackTrace();
-                    }
-                    stopCaricamento(100);
-                }
-
-                @Override
-                public void noInternetConnection() {
-                    stopCaricamento(100);
-                    noInternetErrorBar();
-                }
-            }).execute(req);
+        } else {
+            errorBar(getResources().getString(R.string.errore_server), 2000);
         }
     }
 }

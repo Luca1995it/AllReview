@@ -332,8 +332,6 @@ public class A24_Recensione extends SuperActivity implements MyDialogFragment.Ri
                     }
 
                 }
-                //negativi.setText(String.valueOf(Integer.valueOf(negativi.getText().toString()) - 1));
-                //TODO definire limite cliccabile dall'utente
             }
         });
 
