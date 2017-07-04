@@ -1,7 +1,5 @@
 package com.example.dounn.menutendina.Database;
 
-import android.content.Intent;
-
 import com.example.dounn.menutendina.Utility.Utility;
 import com.jjoe64.graphview.series.DataPoint;
 
@@ -9,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -26,13 +23,14 @@ public class Grafico {
         punti = new DataPoint[result.length() > 2 ? result.length() : 3];
         date = new int[result.length() > 2 ? result.length() : 3];
 
+
         if(result.length() > 2) {
             for(int i = 0; i < result.length(); i++) {
                 JSONObject o = result.getJSONObject(i);
                 punti[i] = new DataPoint(i, o.getInt("points"));
                 date[i] = o.getInt("data");
             }
-        } else {
+        } else if(result.length() > 0) {
             int i;
             JSONObject o = result.getJSONObject(0);
             for(i = 0; i < result.length(); i++) {
@@ -43,6 +41,11 @@ public class Grafico {
             for(; i < punti.length; i++) {
                 punti[i] = new DataPoint(i, o.getInt("points"));
                 date[i] = o.getInt("data");
+            }
+        } else {
+            for(int i = 0; i < 3; i++) {
+                punti[i] = new DataPoint(i, 0);
+                date[i] = (int) (System.currentTimeMillis() / 1000);
             }
         }
     }

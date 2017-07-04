@@ -59,7 +59,7 @@ public class A4_AttivazioneAccountCodice extends SuperActivity {
                                         Log.d("Risultati conferma codice:", a.toString());
                                         if(!a.getString("status").equals("ERROR")) {
                                             //inserisco il token nella sessione
-                                            getUser().setAttivato(true);
+                                            attivaUser();
                                             Intent intent = new Intent(ctx, A10_HomePage.class);
                                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(intent);

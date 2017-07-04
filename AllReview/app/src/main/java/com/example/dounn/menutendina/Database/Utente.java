@@ -1,25 +1,18 @@
 package com.example.dounn.menutendina.Database;
 
-import com.example.dounn.menutendina.Utility.Utility;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * Created by lucadiliello on 13/06/2017.
  */
 
-public class Utente extends SuperDB{
+public class Utente extends SuperDB {
 
     private String username;
     private String fotopath;
-
     private Level level;
-
     private int id;
-
     private Grafico grafico;
 
     public Utente(JSONObject utente) throws JSONException {

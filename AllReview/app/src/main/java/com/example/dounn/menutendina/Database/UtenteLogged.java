@@ -1,14 +1,13 @@
 package com.example.dounn.menutendina.Database;
 
+import android.content.SharedPreferences;
+
 import com.example.dounn.menutendina.Utility.Request;
 import com.example.dounn.menutendina.Utility.RequestCallback;
+import com.google.gson.Gson;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by lucadiliello on 12/06/2017.
