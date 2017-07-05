@@ -125,50 +125,23 @@ public class A20_ProfiloPubblico extends SuperActivity {
         seguiAdd = (Button) findViewById(R.id.segui_add);
         seguiRemove = (Button) findViewById(R.id.segui_remove);
 
-        //se non sono loggato non vedo preferiti e segnala
-        if(!isActivated()) {
-            setGone(seguiAdd, seguiRemove, progressSegui);
-        } else {
-            //mostro un breve caricamento
-            progressSegui.setVisibility(View.VISIBLE);
 
-            //richiesta per controllare il bottone dei preferiti da mostrare
-            JSONObject reqpref = new JSONObject();
-            try {
-                reqpref.put("id_utente", id_utente);
-                reqpref.put("token", getToken());
-                reqpref.put("path", "is_seguito");
+        if(id_utente < 1) {
+            errorBar(getResources().getString(R.string.Err_user), 5000);
+        } else updateUser(id_utente);
 
-
-                new Request(new RequestCallback() {
-                    @Override
-                    public void inTheEnd(JSONObject a) {
-                        try {
-                            if(!a.getString("status").equals("ERROR")) {
-                                progressSegui.setVisibility(View.GONE);
-                                if(a.getString("result").equals("si")) {
-                                    //se è già preferito mostro bottone per rimuoverlo
-                                    seguiRemove.setVisibility(View.VISIBLE);
-                                } else {
-                                    //altrimenti mostro bottone per poterlo aggiungere
-                                    seguiAdd.setVisibility(View.VISIBLE);
-                                }
-                            }
-                        } catch(JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void noInternetConnection() {
-                        noInternetErrorBar();
-                    }
-                }).execute(reqpref);
-            } catch(JSONException e) {
-                e.printStackTrace();
-                errorBar(getResources().getString(R.string.Error), 2000);
+        imageProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //passo la foto alla classe per zoomare
+                Store.add("zoom_foto", imageProfile.getFotoPath());
+                Intent fullScreenIntent = new Intent(ctx, A31_FullScreenImage.class);
+                fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
+                startActivity(fullScreenIntent);
             }
+        });
 
+        if(isActivated()) {
             //associo il listener al bottone per la rimozione
             seguiRemove.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -209,7 +182,8 @@ public class A20_ProfiloPubblico extends SuperActivity {
                             }
                         }).execute(reqpref);
                     } catch(JSONException e) {
-
+                        errorBar(getResources().getString(R.string.Error), 2000);
+                        e.printStackTrace();
                     }
                 }
             });
@@ -255,26 +229,11 @@ public class A20_ProfiloPubblico extends SuperActivity {
                         }).execute(reqpref);
                     } catch(JSONException e) {
                         errorBar(getResources().getString(R.string.Error), 2000);
-
+                        e.printStackTrace();
                     }
                 }
             });
         }
-
-        if(id_utente < 1) {
-            errorBar(getResources().getString(R.string.Err_user), 5000);
-        } else updateUser(id_utente);
-
-        imageProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //passo la foto alla classe per zoomare
-                Store.add("zoom_foto", imageProfile.getFotoPath());
-                Intent fullScreenIntent = new Intent(ctx, A31_FullScreenImage.class);
-                fullScreenIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY);
-                startActivity(fullScreenIntent);
-            }
-        });
 
         enableOnScrollDownAction();
     }
@@ -283,6 +242,13 @@ public class A20_ProfiloPubblico extends SuperActivity {
     public void onScrollDownAction() {
         super.onScrollDownAction();
         updateUser(id_utente);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onScrollDownAction();
     }
 
     public void showUser() {
@@ -326,6 +292,49 @@ public class A20_ProfiloPubblico extends SuperActivity {
         pointsProgress.setProgress(0);
         levelProgress.setProgress(0);
 
+        //se non sono loggato non vedo preferiti e segnala
+
+        setGone(seguiAdd, seguiRemove, progressSegui);
+        if(isActivated()) {
+            //mostro un breve caricamento
+            progressSegui.setVisibility(View.VISIBLE);
+
+            //richiesta per controllare il bottone dei preferiti da mostrare
+            JSONObject reqpref = new JSONObject();
+            try {
+                reqpref.put("id_utente", id_utente);
+                reqpref.put("token", getToken());
+                reqpref.put("path", "is_seguito");
+
+                new Request(new RequestCallback() {
+                    @Override
+                    public void inTheEnd(JSONObject a) {
+                        try {
+                            if(!a.getString("status").equals("ERROR")) {
+                                progressSegui.setVisibility(View.GONE);
+                                if(a.getString("result").equals("si")) {
+                                    //se è già preferito mostro bottone per rimuoverlo
+                                    seguiRemove.setVisibility(View.VISIBLE);
+                                } else {
+                                    //altrimenti mostro bottone per poterlo aggiungere
+                                    seguiAdd.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        } catch(JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void noInternetConnection() {
+                        noInternetErrorBar();
+                    }
+                }).execute(reqpref);
+            } catch(JSONException e) {
+                e.printStackTrace();
+                errorBar(getResources().getString(R.string.Error), 2000);
+            }
+        }
 
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(utenteRed.getGrafico().getPunti());
         series.setDrawDataPoints(true);

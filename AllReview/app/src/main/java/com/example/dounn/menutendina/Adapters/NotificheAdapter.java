@@ -80,9 +80,9 @@ public class NotificheAdapter extends RecyclerView.Adapter<NotificheAdapter.View
                             Store.add("elemento", not.getRecensione().getElemento());
                             break;
                         case NuovaRecensioneUtenteCheSeguo:
-                            i = new Intent(context, A25_RecensioniUtente.class);
+                            i = new Intent(context, A27_PaginaElemento.class);
                             i.putExtra("focus", not.getRecensione().getId());
-                            i.putExtra("id_utente", not.getRecensione().getUtente().getId());
+                            Store.add("elemento", not.getRecensione().getElemento());
                             break;
                         case NuovaRispostaMiaDomanda:
                             i = new Intent(context, A29_Risposte.class);

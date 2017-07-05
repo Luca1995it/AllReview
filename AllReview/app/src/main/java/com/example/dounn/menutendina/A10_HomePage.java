@@ -192,13 +192,11 @@ public class A10_HomePage extends SuperActivity {
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                                         arrayListeLayout.get(count).setAdapter(new SuggeritiPreferitiRecentiAdapter(ctx, elementi, intent));
-
                                     }
                                 }
 
                             } else {
-                                noInternetErrorBar();
-
+                                errorBar(getResources().getString(R.string.errore_server),2000);
                             }
                         } catch(JSONException e) {
                             e.printStackTrace();

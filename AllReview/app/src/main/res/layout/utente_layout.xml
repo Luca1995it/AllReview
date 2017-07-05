@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
     app:cardCornerRadius="10dp">
 
@@ -17,7 +18,8 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_margin="3dp"
-            android:padding="3dp"/>
+            android:padding="3dp"
+            custom:image_style="circular"/>
 
         <LinearLayout
             android:layout_width="match_parent"
